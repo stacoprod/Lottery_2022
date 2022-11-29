@@ -14,5 +14,176 @@ html {
 }
 
 body {
-  margin-bottom: 60px;
+    margin-bottom: 60px;
+    background-color: #474747;
+}
+
+.logo {
+    width = 90%;
+    display: flex;
+    justify-content: center;
+}
+.banner{
+    display:flex;
+    align-items: center;
+    margin: auto;
+    font-size: 30px;
+    color: white;
+    width: 600px;
+    height: 90px;
+}
+.homeButton {
+    font-size: 70px;
+    transform: scale(0.90);
+    transition: all 200ms ease-in-out;
+}
+.homeButton:hover {
+    transform: scale(1.1);
+    transition: all 200ms ease-in-out;
+}
+.logoItem {
+    padding-left: 50px;
+    margin: auto;
+}
+
+.content {
+    margin: auto;
+    width = 90%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.textMessage {
+    font-size: 25px;
+    color: white;
+    padding-right: 150px;
+    margin: auto;
+}
+
+.separation {
+    width: 90%;
+    margin-bottom: 50px;
+}
+
+h2 {
+    color: #FFAD33;
+    font-size: 30px;
+    margin: auto;
+}
+
+h1 {
+    color: white;
+    font-size: 60px;
+    margin: auto;
+}
+
+.changeColor {
+    color: white;
+}
+.buttonBox {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+    width: 460px;
+}
+.button {
+    width: 50%;
+    font-size: 22px;
+    text-align:center;
+    background-color: #25B900;
+    color: white;
+    padding: 40px;
+    border-radius: 45px;
+    transform: scale(0.90);
+    transition: all 200ms ease-in-out;
+}
+.button2 {
+    background-color: #ffa849;
+}
+.button:hover {
+    background-color: #4fd100;
+    transform: scale(1);
+    transition: all 200ms ease-in-out;
+}
+.button2:hover {
+    background-color: #ffa849;
+}
+
+#shortGUID {
+    margin: auto;
+    width: 500px;
+    height: 40px;
+    font-size: 20px;
+}
+
+h3 {
+    margin: auto;
+    color: white;
+    font-size: 22px;
+    position: relative;
+    right: 150px;
+}
+
+p {
+    color: white;
+    margin: auto;
+}
+
+.infoItem {
+    margin: auto;
+    width: 300px;
+}
+
+a {
+    text-decoration: none;
+    color: white;
+}
+a:hover {
+    text-decoration: none;
+    color: white;
+    transform: scale(1.1);
+    transition: all 200ms ease-in-out;
+}
+h3:hover {
+    transform: scale(1.1);
+    transition: all 200ms ease-in-out;
+}
+.participate {
+    margin: auto;
+}
+
+.bowl {
+    font-size: 19px;
+    width: 56px;
+    height: 56px;
+    background: linear-gradient(45deg, silver, white);
+    padding: 12px;
+    margin: 7px;
+    border-radius: 27px;
+    text-align: center;
+    transform: scale(0.90);
+    transition: all 200ms ease-in-out;
+}
+
+.bowl:hover {
+    background: linear-gradient(45deg, #ff921b, #ffd39d);
+    transform: scale(1.1);
+    transition: all 200ms ease-in-out;
+}
+.bowl:visited {
+    background-color: rgb(255, 145, 0);
+}
+
+.gameGrid {
+    margin: auto;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 500px;
+}
+.warnings {
+    text-align:justify;
+    width: 600px;
 }

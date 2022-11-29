@@ -2,7 +2,34 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<header>
+    <div class="logo"><a href="#"><img class=" logoItem" src="/images/logo.png" /></a></div>
+</header>
+<div class="content">
+    <span class="textMessage"><iconify-icon inline icon="ic:baseline-access-time"></iconify-icon>   PROCHAINE LOTERIE DANS:</span>
+    <br />
+    <hr class="separation">
+    <h2>Le montant de la cagnotte en cours est de:</h2>
+    <br />
+    <h1>3345€</h1>
+    <br />
+    <h2>Pour <span class="changeColor">668</span> parties jouées</h2>
+    <br />
+    <br />
+    <div class="buttonBox">
+        <a class="button" asp-controller="Home" asp-action="Game">JE PARTICIPE</a>
+    </div>
+    <br />
+    <br />
+    <h2>Accéder aux résultats:</h2>
+    <br />
+    <input type="text" id="shortGUID" name="shortGUID" required placeholder="Entrez ici votre code personnel à 22 chiffres..."
+            minlength="4" maxlength="8" size="22">
+    <br />
+    <h3><a asp-controller="Home" asp-action="GuidInformation"><iconify-icon inline icon="ic:outline-info"></iconify-icon> En savoir plus</a></h3>
+    <br />
+    <br />
+    <br />
+
 </div>
+

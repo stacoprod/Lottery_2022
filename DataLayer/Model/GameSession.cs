@@ -13,6 +13,8 @@ namespace DataLayer.Model
         [MinLength(22)]
         [MaxLength(22)]
         public string ShortGuid { get; set; }
+        [MinLength(17)]
+        [MaxLength(17)]
         public string PlayedNumbers { get; set; }
         public GameDraw GameDraw { get; set; }
         public int GameDrawId { get; set; }

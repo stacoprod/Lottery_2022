@@ -1,0 +1,49 @@
+﻿@{
+    ViewData["Title"] = "Game Session";
+}
+<header>
+</header>
+<div class="content">
+    <div class="banner">
+        <a class="homeButton" asp-controller="Home" asp-action="Index"><iconify-icon inline icon="ic:outline-home"></iconify-icon></a>
+        <span class="textMessage"><iconify-icon inline icon="ic:baseline-access-time"></iconify-icon>   PROCHAINE LOTERIE DANS:</span>
+    </div>
+    <script>
+        window.startRedirection = 5;
+        test = function () {
+
+            setInterval(function () {
+
+                document.getElementById("compteur").innerHTML = window.startRedirection;
+
+                if (!window.startRedirection) { window.location = "https://www.google.fr" }
+
+                window.startRedirection = window.startRedirection - 1;
+
+
+
+            }, 1000);
+        }
+        var elmt = document.getElementById("compteur");
+        elmt.onload = test();
+    </script>
+    <br>
+    <hr class="separation">
+    <h2>Veuillez choisir 6 numéros dans la liste:</h2>
+    <br>
+    <div class="gameGrid">
+        @{ for (int i = 1; i < 50; i++)
+            { <span class='bowl'> @i </span>}
+        }
+    </div>
+    <br>
+    <br>
+    <div class="buttonBox">
+        <a class="button button2" asp-controller="Home" asp-action="Game">REINITIALISER LA SELECTION</a>
+        <a class="button" asp-controller="Home" asp-action="Game">VALIDER CES NUMEROS</a>
+    </div>
+    <br>
+    <br>
+    <br>
+    <div class="alerts"></div>
+</div>
