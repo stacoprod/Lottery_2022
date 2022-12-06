@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace DataLayer.Migrations
 {
-    public partial class Initial : Migration
+    public partial class initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -15,9 +15,9 @@ namespace DataLayer.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    DateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    WinningNumbers = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Jackpot = table.Column<int>(type: "int", nullable: false)
+                    DateTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    DrawnNumbers = table.Column<string>(type: "nvarchar(17)", maxLength: 17, nullable: true),
+                    Jackpot = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -30,8 +30,9 @@ namespace DataLayer.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    ShortGuid = table.Column<string>(type: "nvarchar(22)", maxLength: 22, nullable: false),
-                    PlayedNumbers = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ShortGuid = table.Column<string>(type: "nvarchar(22)", maxLength: 22, nullable: true),
+                    PlayedNumbers = table.Column<string>(type: "nvarchar(17)", maxLength: 17, nullable: true),
+                    Rank = table.Column<int>(type: "int", maxLength: 1, nullable: true),
                     GameDrawId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>

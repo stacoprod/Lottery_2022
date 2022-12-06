@@ -7,7 +7,23 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Remove="Views\Home\ValidateSession.cshtml" />
+    <Compile Remove="Controllers\**" />
+    <Content Remove="Controllers\**" />
+    <EmbeddedResource Remove="Controllers\**" />
+    <None Remove="Controllers\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Services\AutomaticLaunchService.cs" />
+    <Compile Remove="Services\IAutomaticLaunchService.cs" />
+    <Compile Remove="Services\IIndexService.cs" />
+    <Compile Remove="Services\IndexService.cs" />
+    <Compile Remove="Services\IResultsService.cs" />
+    <Compile Remove="Services\ResultsService.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="Controllers\HomeController.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -28,6 +44,12 @@
 
   <ItemGroup>
     <Folder Include="wwwroot\images\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Views\Shared\Error.cshtml" />
+    <None Include="Views\Shared\_Layout.cshtml" />
+    <None Include="Views\Shared\_ValidationScriptsPartial.cshtml" />
   </ItemGroup>
 
 </Project>

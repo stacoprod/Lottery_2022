@@ -1,0 +1,51 @@
+﻿@{
+    ViewData["Title"] = "Results Page";
+}
+
+<div class="content">
+    <div class="banner">
+        <a class="homeButton" asp-controller="Home" asp-action="Index"><iconify-icon inline icon="ic:outline-home"></iconify-icon></a>
+    </div>
+    <br />
+    <hr class="separation">
+    <h2>Résultats du tirage:</h2>
+    <br />
+    <h4>Rang 1 (6 bons numéros): <span class="changeColor">@Model.Rank1Winners</span> personne(s) remporte(nt) <span class="changeColor">@Model.Rank1Gain €</span> </h4>
+    <h4>Rang 2 (5 bons numéros): <span class="changeColor">@Model.Rank2Winners</span> personne(s) remporte(nt) <span class="changeColor">@Model.Rank2Gain €</span> </h4>
+    <h4>Rang 3 (4 bons numéros): <span class="changeColor">@Model.Rank3Winners</span> personne(s) remporte(nt) <span class="changeColor">@Model.Rank3Gain €</span> </h4>
+    <br />
+    <h3><a asp-controller="Home" asp-action="GainInformation"><iconify-icon inline icon="ic:outline-info"></iconify-icon> En savoir plus sur le calcul des gains</a></h3>
+    <br />
+    <h2>Combinaison sortante du <span class="changeColor">@Model.DateTime</span>:</h2>
+    <br />
+    <br />
+    <div class="gameGrid">
+        @{
+            for (int i = 0; i < 6; i++)
+            {
+                <span class='bowl'> @Model.DrawNumbers[@i] </span>
+            }
+        }
+    </div>
+    <br />
+    <h2>Votre combinaison:</h2>
+    <br />
+    <div class="gameGrid">
+        @{
+            for (int i = 0; i < 6; i++)
+            {
+                <span class='bowl'> @Model.PlayedNumbers[@i]</span>
+            }
+        }
+    </div>
+    <br />
+    <h2>Vous avez trouvé <span class="changeColor">@Model.NumberOfGoodNumbers</span> bon numéro. Vous avez gagné <span class="changeColor">@Model.Gain</span> €</h2>
+    <h3><a asp-controller="Home" asp-action="GameInformation"><iconify-icon inline icon="ic:outline-info"></iconify-icon> En savoir plus / règlement du jeu</a></h3>
+    <br />
+    <span class="textMessage"><iconify-icon inline icon="ic:baseline-access-time"></iconify-icon>   PROCHAINE LOTERIE DANS:</span>
+    <br />
+    <div class="buttonBox">
+        <a class="button" asp-controller="Home" asp-action="Session">REJOUER</a>
+    </div>
+</div>
+

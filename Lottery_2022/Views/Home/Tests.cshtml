@@ -1,5 +1,5 @@
 ﻿@{
-    ViewData["Title"] = "Game Session";
+    ViewData["Title"] = "Tests";
 }
 <header>
 </header>
@@ -29,18 +29,41 @@
     </script>
     <br>
     <hr class="separation">
+    <form method="get">
+        <p>
+            <label for="numbers">Veuillez choisir 6 numéros dans la liste:</label>
+            <div class="gameGrid">
+                @{
+                    for (int i = 1; i < 50; i++)
+                    {
+                        <div>
+                            <label for="@i" class="integerOnBall">@i</label>
+                            <input type="checkbox" class="ball" id="@i" formaction="ValidateSession" name="number" value="@i">
+
+                        </div>
+                    }
+                }
+            </div>
+
+        <p>
+            <input type="submit" value="Soumettre" asp-controller="Home" asp-action="ValidateSession">
+        </p>
+    </form>
     <h2>Veuillez choisir 6 numéros dans la liste:</h2>
     <br>
     <div class="gameGrid">
-        @{ for (int i = 1; i < 50; i++)
-            { <span class='bowl'> @i </span>}
+        @{
+            for (int i = 1; i < 50; i++)
+            {
+                <span class='bowl'> @i </span>
+            }
         }
     </div>
     <br>
     <br>
     <div class="buttonBox">
-        <a class="button button2" asp-controller="Home" asp-action="Game">REINITIALISER LA SELECTION</a>
-        <a class="button" asp-controller="Home" asp-action="Game">VALIDER CES NUMEROS</a>
+        <a class="button button2" asp-controller="Home" asp-action="Session">REINITIALISER LA SELECTION</a>
+        <a class="button" asp-controller="Home" asp-action="ValidateSession">VALIDER CES NUMEROS</a>
     </div>
     <br>
     <br>

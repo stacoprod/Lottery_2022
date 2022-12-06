@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataLayer.Migrations
 {
     [DbContext(typeof(LotteryDbContext))]
-    [Migration("20221128141327_Initial")]
-    partial class Initial
+    [Migration("20221206201856_initial")]
+    partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -32,15 +32,15 @@ namespace DataLayer.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<DateTime>("DateTime")
+                    b.Property<DateTime?>("DateTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("Jackpot")
-                        .HasColumnType("int");
+                    b.Property<string>("DrawnNumbers")
+                        .HasMaxLength(17)
+                        .HasColumnType("nvarchar(17)");
 
-                    b.Property<string>("WinningNumbers")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int?>("Jackpot")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -59,11 +59,14 @@ namespace DataLayer.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("PlayedNumbers")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(17)
+                        .HasColumnType("nvarchar(17)");
+
+                    b.Property<int?>("Rank")
+                        .HasMaxLength(1)
+                        .HasColumnType("int");
 
                     b.Property<string>("ShortGuid")
-                        .IsRequired()
                         .HasMaxLength(22)
                         .HasColumnType("nvarchar(22)");
 

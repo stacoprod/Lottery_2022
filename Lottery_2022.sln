@@ -3,12 +3,12 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.3.32929.385
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lottery_2022", "Lottery_2022\Lottery_2022.csproj", "{FDDF50B3-9334-42BE-B9C0-CECD0D6A3B87}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lottery_2022", "Lottery_2022\Lottery_2022.csproj", "{FDDF50B3-9334-42BE-B9C0-CECD0D6A3B87}"
 	ProjectSection(ProjectDependencies) = postProject
 		{7CE79C8F-531D-42A2-91C6-51009E98C0E3} = {7CE79C8F-531D-42A2-91C6-51009E98C0E3}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataLayer", "DataLayer\DataLayer.csproj", "{7CE79C8F-531D-42A2-91C6-51009E98C0E3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataLayer", "DataLayer\DataLayer.csproj", "{7CE79C8F-531D-42A2-91C6-51009E98C0E3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

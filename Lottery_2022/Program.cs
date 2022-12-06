@@ -8,7 +8,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<LotteryDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddControllersWithViews();
 
-builder.Services.AddScoped<IGameSessionService, GameSessionService>();
+builder.Services.AddScoped<IGameService, GameService>();
+
 
 var app = builder.Build();
 
