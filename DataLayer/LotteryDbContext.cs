@@ -9,7 +9,7 @@ namespace DataLayer
         {
 
         }
-        public DbSet<GameDraw> GameDraws { get; set; }
-        public DbSet<GameSession> GameSessions { get; set; }
+        public DbSet<GameDraw>? GameDraws { get; set; }
+        public DbSet<GameSession>? GameSessions { get; set; }
     }
 }

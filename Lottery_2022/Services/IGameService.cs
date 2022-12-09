@@ -8,5 +8,6 @@ namespace Lottery_2022.Services
         IndexViewModel GetCurrentDrawData();
         SessionValidationViewModel ValidateGameSession(int[] numbers);
         GetResultsWithCodeViewModel GetResultsWithCode(string shortGUID);
+        void AddGenericData();
     }
 }

@@ -5,7 +5,7 @@ namespace Lottery_2022.Models
 {
     public class IndexViewModel
     {
-        public int Jackpot { get; set; }
-        public int NumberOfPlayers { get; set; }
+        public string? Jackpot { get; set; }
+        public string? NumberOfPlayers { get; set; }
     }
 }

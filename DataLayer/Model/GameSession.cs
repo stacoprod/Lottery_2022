@@ -21,6 +21,7 @@ namespace DataLayer.Model
         public int? Rank { get; set; }   
         
         // Navigation Property
-        public GameDraw GameDraw { get; set; }
+        public int? GameDrawId { get; set; } 
+        public GameDraw? GameDraw { get; set; }
     }
 }

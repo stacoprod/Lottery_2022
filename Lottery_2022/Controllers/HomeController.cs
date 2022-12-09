@@ -18,7 +18,7 @@ namespace Lottery_2022.Controllers
             _logger = logger;
             _gameService = gameService;
         }
-        #endregion
+        #endregion constructor
 
         #region actions
         //Display current jackpot & amount of players on index page
@@ -74,7 +74,13 @@ namespace Lottery_2022.Controllers
         {
             return View();
         }
-        #endregion
+        // Tool used to add test data to DB (like seed method)
+        public IActionResult addData()
+        {
+            _gameService.AddGenericData();
+            return RedirectToAction("Index", "Home");
+        }
+        #endregion actions
 
 
 
