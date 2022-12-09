@@ -1,10 +1,9 @@
 ﻿using Lottery_2022.Models;
 using Lottery_2022.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
-
-
-
+using System.Net.Http.Headers;
 
 namespace Lottery_2022.Controllers
 {
@@ -22,57 +21,59 @@ namespace Lottery_2022.Controllers
         #endregion
 
         #region actions
-        [HttpGet]
+        //Display current jackpot & amount of players on index page
         public IActionResult Index(IndexViewModel model)
         {
             model = _gameService.GetCurrentDrawData();
             return View(model);
         }
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult GetResultsWithCode()
-        {   
-            var model = new GetResultsWithCodeViewModel()
-            {
-                ShortGuid = "9999999999999999999999"
-            };
-            return RedirectToAction("GameResults", "Home");
-        }
-
-        public IActionResult Session()
-        {
-            return View();
-        }
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult ValidateSession(ValidateSessionViewModel model)
+        //Get short GUID code and request DB to display personnalized results page
+        [HttpGet("code")]
+        [AllowAnonymous]
+        public IActionResult GetResultsWithCode(string code)
         {
             if (!ModelState.IsValid)
             {
                 return RedirectToAction("Session", "Home");
             }
+
+            GetResultsWithCodeViewModel model = _gameService.GetResultsWithCode(code);
             return View(model);
         }
-
-        [HttpGet]
-        public IActionResult SessionSummary(SessionSummaryViewModel model)
-        {
-            model = _gameService.GetSessionData();
-            return View(model);
-        }
-
-        [HttpGet]
-        public IActionResult GameResults(GameResultsViewModel model)
-        {
-            model = _gameService.GetGameResults();
-            return View(model);
-        }
-
-        public IActionResult GuidInformation()
+        //Simply redirect to session-grid page
+        public IActionResult Session()
         {
             return View();
         }
+        //Post selected numbers and insert into DB, then redirect to session summary page with personnalized display
+        [HttpGet()]
+        [AllowAnonymous]
+        [Route("SessionValidation")]
+        public IActionResult SessionValidation([FromQuery(Name = "numbers")] int[] numbers)
+        {
+            if (!ModelState.IsValid)
+            {
+                return RedirectToAction("Session", "Home");
+            }
 
+            SessionValidationViewModel model = _gameService.ValidateGameSession(numbers);
+            return View(model);
+        }
+        //Give more information about short GUID and how it's used to record session and find results
+        public IActionResult GuidInformations()
+        {
+            return View();
+        }
+        //Give more information about the draw and how the gains are calculated
+        public IActionResult GameInformations()
+        {
+            return View();
+        }
+        //Give more details about RGPD and conditions of use
+        public IActionResult LegalInformations()
+        {
+            return View();
+        }
         #endregion
 
 

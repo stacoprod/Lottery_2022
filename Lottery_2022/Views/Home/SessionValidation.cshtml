@@ -1,0 +1,43 @@
+﻿@{
+    ViewData["Title"] = "Session Confirmation Page";
+}
+
+<div class="content">
+    <div class="banner">
+        <a class="homeButton" asp-controller="Home" asp-action="Index"><iconify-icon inline icon="ic:outline-home"></iconify-icon></a>
+    </div>
+    <br />
+    <hr class="separation">
+    <br />
+    <h2><span class="changeColor">Merci d'avoir participé!</span></h2>
+    <h4>La cagnotte totale de la partie en cours a augmenté de 10€ grâce à vous</h4>
+    <br />
+    <h2>Tirage du: <span class="changeColor">@Model.DrawDateTime</span></h2>
+    <br />
+    <h2>Votre combinaison:</h2>
+    <br />
+    <div class="gameGrid">
+        @{
+            for (int i = 0; i < 6; i++)
+            {
+                <span class='ball'> @Model.PlayedNumbers[@i]</span>
+            }
+        }
+    </div>
+    <br />
+    <h2>Voici votre code:</h2>
+    <br />
+    <h2><span class="changeColor">@Model.Code</span></h2>
+    <br />
+    <h4>Copiez collez ce code, ne le communiquez à personne, et gardez en lieu sûr</h4> 
+    <h4>Il vous sera nécessaire afin de consulter les résultats du tirage et voir vos gains</h4>
+    <br />
+    <br />
+    <span class="textMessage"><iconify-icon inline icon="ic:baseline-access-time"></iconify-icon>   PROCHAINE LOTERIE DANS:</span>
+    <br />
+    <div class="buttonBox">
+        <a class="button" asp-controller="Home" asp-action="Session">REJOUER</a>
+        <a class="button" asp-controller="Home" asp-action="Index">ACCUEIL</a>
+    </div>
+</div>
+
