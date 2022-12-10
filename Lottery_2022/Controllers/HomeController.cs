@@ -2,6 +2,7 @@
 using Lottery_2022.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Net.Http.Headers;
 
@@ -36,29 +37,30 @@ namespace Lottery_2022.Controllers
             {
                 return RedirectToAction("Session", "Home");
             }
-
             GetResultsWithCodeViewModel model = _gameService.GetResultsWithCode(code);
             return View(model);
         }
+
         //Simply redirect to session-grid page
         public IActionResult Session()
         {
             return View();
         }
+
         //Post selected numbers and insert into DB, then redirect to session summary page with personnalized display
         [HttpGet()]
         [AllowAnonymous]
         [Route("SessionValidation")]
-        public IActionResult SessionValidation([FromQuery(Name = "numbers")] int[] numbers)
+        public IActionResult SessionValidation([FromQuery(Name = "number")] List<int> numbers)
         {
             if (!ModelState.IsValid)
             {
                 return RedirectToAction("Session", "Home");
             }
-
             SessionValidationViewModel model = _gameService.ValidateGameSession(numbers);
             return View(model);
         }
+
         //Give more information about short GUID and how it's used to record session and find results
         public IActionResult GuidInformations()
         {
@@ -74,13 +76,14 @@ namespace Lottery_2022.Controllers
         {
             return View();
         }
+
         // Tool used to add test data to DB (like seed method)
         public IActionResult addData()
         {
             _gameService.AddGenericData();
             return RedirectToAction("Index", "Home");
         }
-        #endregion actions
+       
 
 
 
@@ -89,5 +92,6 @@ namespace Lottery_2022.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+        #endregion actions
     }
 }

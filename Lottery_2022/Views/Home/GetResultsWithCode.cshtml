@@ -10,9 +10,9 @@
     <hr class="separation">
     <h2>Résultats du tirage:</h2>
     <br />
-    <h4>Rang 1 (6 bons numéros): <span class="changeColor">@Model.Rank1Winners</span> personne(s) remporte(nt) <span class="changeColor">@Model.Rank1Gain €</span> </h4>
-    <h4>Rang 2 (5 bons numéros): <span class="changeColor">@Model.Rank2Winners</span> personne(s) remporte(nt) <span class="changeColor">@Model.Rank2Gain €</span> </h4>
-    <h4>Rang 3 (4 bons numéros): <span class="changeColor">@Model.Rank3Winners</span> personne(s) remporte(nt) <span class="changeColor">@Model.Rank3Gain €</span> </h4>
+    <h4>Rang 1 (6 bons n°): <span class="changeColor">@Model.Rank1Winners</span> personne(s) remporte(nt) <span class="changeColor">@Model.Rank1Gain €</span> </h4>
+    <h4>Rang 2 (5 bons n°): <span class="changeColor">@Model.Rank2Winners</span> personne(s) remporte(nt) <span class="changeColor">@Model.Rank2Gain €</span> </h4>
+    <h4>Rang 3 (4 bons n°): <span class="changeColor">@Model.Rank3Winners</span> personne(s) remporte(nt) <span class="changeColor">@Model.Rank3Gain €</span> </h4>
     <br />
     <h2>Combinaison sortante du <span class="changeColor">@Model.DateTime</span>:</h2>
     <br />
@@ -21,7 +21,7 @@
         @{
             for (int i = 0; i < 6; i++)
             {
-                <span class='ball'> @Model.DrawNumbers[@i] </span>
+                 <span class='ball'> @Model.DrawNumbers[@i] </span>
             }
         }
     </div>
@@ -32,12 +32,21 @@
         @{
             for (int i = 0; i < 6; i++)
             {
-                <span class='ball'> @Model.PlayedNumbers[@i]</span>
+                if (Model.playedNumberIsGood(@Model.PlayedNumbers[@i]))
+                {
+                    <span class='ballColoured'> @Model.PlayedNumbers[@i]</span>
+                }
+                else
+                {
+                    <span class='ball'> @Model.PlayedNumbers[@i]</span>
+                }
+                
             }
         }
     </div>
     <br />
-    <h2>Vous avez trouvé <span class="changeColor">@Model.NumberOfGoodNumbers</span> bon(s) numéro(s). Vous avez gagné <span class="changeColor">@Model.Gain</span> €</h2>
+    <h2>Vous avez trouvé <span class="changeColor">@Model.NumberOfGoodNumbers</span> bon(s) numéro(s).</h2> 
+    <h2>Vous avez gagné <span class="changeColor">@Model.Gain</span> €</h2>
     <br />
     <h3><a asp-controller="Home" asp-action="GameInformations"><iconify-icon inline icon="ic:outline-info"></iconify-icon> A propos du calcul des gains / règlement du jeu</a></h3>
     <br />

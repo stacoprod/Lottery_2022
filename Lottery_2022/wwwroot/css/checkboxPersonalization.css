@@ -23,7 +23,7 @@
     opacity: 0;
     z-index: 2;
 }
-.ball, .form-check label{
+.ball, .ballColoured, .form-check label{
     font-size: 19px;
     width: 56px;
     height: 56px;
@@ -33,6 +33,10 @@
     text-align: center;
     transform: scale(0.90);
     transition: all 200ms ease-in-out;
+}
+.ballColoured {
+    background: linear-gradient(45deg, #009f18, #11ff34);
+    color: white;
 }
 .form-check label {
     position: absolute;
@@ -50,7 +54,8 @@
     transition: all 150ms ease-in-out;
 }
 .form-check input:checked + label {
-    background: linear-gradient(45deg, #1bff3d, #bbfcc5);
+    background: linear-gradient(45deg, #009f18, #11ff34);
+    color: white;
     transform: scale(1.1);
     transition: all 100ms ease-in-out;
     box-shadow: none;

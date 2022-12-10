@@ -1,8 +1,12 @@
-﻿using DataLayer;
+﻿using CSharpVitamins;
+using DataLayer;
 using DataLayer.Model;
 using Lottery_2022.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis.FlowAnalysis.DataFlow;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Microsoft.VisualBasic;
+using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace Lottery_2022.Services
@@ -18,143 +22,166 @@ namespace Lottery_2022.Services
 
         public LotteryDbContext DbContext { get; set; }
 
-        #region get
+
         public IndexViewModel GetCurrentDrawData()
         {
-            //retrieve jackpot and number of players for the current draw:
+            string? jackpot, numberOfPlayers;
+            CurrentDrawRequests(out jackpot, out numberOfPlayers);
+
+            var result = new IndexViewModel()
+            {
+                Jackpot = jackpot,
+                NumberOfPlayers = numberOfPlayers,
+            };
+            return result;
+        }
+        /// <summary>
+        /// Retrieves jackpot and number of players for the current draw
+        /// </summary>
+        private void CurrentDrawRequests(out string? jackpot, out string numberOfPlayers)
+        {
             var lastDraw = dbContext.GameDraws.OrderBy(x => x.Id).LastOrDefault();
 
-            var jackpot = dbContext.GameDraws.Where(d => d.Id.Equals(lastDraw.Id))
+            jackpot = dbContext.GameDraws.Where(d => d.Id.Equals(lastDraw.Id))
                                              .Select(d => d.Jackpot)
                                              .FirstOrDefault()
                                              .ToString();
-            var numberOfPlayers = dbContext.GameSessions.Join(dbContext.GameDraws,
+            numberOfPlayers = dbContext.GameSessions.Join(dbContext.GameDraws,
                                               gamesession => gamesession.GameDrawId, gamedraw => gamedraw.Id,
                                              (gamesession, gamedraw) => new { GameSession = gamesession, GameDraw = gamedraw })
                                              .Where(d => d.GameDraw.Id.Equals(lastDraw.Id))
                                              .Select(s => s.GameSession)
                                              .Count()
-                                             .ToString();                                                            
-            //return view model:
-            var result = new IndexViewModel()
-            {
-                Jackpot = jackpot,
-                NumberOfPlayers = numberOfPlayers,     
-            };
-            return result;
+                                             .ToString();
         }
         
-        #endregion
-
-        #region post
 
         public GetResultsWithCodeViewModel GetResultsWithCode(string shortGUID)
         {
-            var controlOfShortGuid = dbContext.GameSessions.Where(s => s.ShortGuid.Equals(shortGUID))
-                                             .Count();
-      
-            //if code ok than launch calcul of results
-            if (controlOfShortGuid == 1)
+            var shortGuidVerification = dbContext.GameSessions.Where(s => s.ShortGuid.Equals(shortGUID)).Count();
+            
+            if (shortGuidVerification == 1)
             {
-                // Retrieve data from both session and related draw
-                var sessionData = dbContext.GameSessions.Where(s => s.ShortGuid.Equals(shortGUID))
-                                                 .FirstOrDefault();
-                
-                var relatedDrawData = dbContext.GameDraws.Where(s => s.Id.Equals(sessionData.GameDrawId))
-                                                 .FirstOrDefault();
-                //record GameDraw Id
-                var gameDrawID = relatedDrawData?.Id;
+                GameSession? sessionData;
+                GameDraw? relatedDrawData;
+                int rank1Winners, rank2Winners, rank3Winners;
 
-                // Retrieve number of winners by category
-
-                int rank1Winners = dbContext.GameSessions.Where(s => s.Rank.Equals(1))
-                                                        .Where(i => i.GameDrawId.Equals(gameDrawID))
-                                                        .Count();
-                int rank2Winners = dbContext.GameSessions.Where(s => s.Rank.Equals(2))
-                                                        .Where(i => i.GameDrawId.Equals(gameDrawID))
-                                                        .Count();
-                int rank3Winners = dbContext.GameSessions.Where(s => s.Rank.Equals(3))
-                                                        .Where(i => i.GameDrawId.Equals(gameDrawID))
-                                                        .Count();
-                // Manage the cases with 0 winners for calculation
-                int rank1divide;
-                int rank2divide;
-                int rank3divide;
-
-                if (rank1Winners == 0) { rank1divide = 1; } else { rank1divide = rank1Winners; }
-                if (rank2Winners == 0) { rank2divide = 1; } else { rank2divide = rank2Winners; }
-                if (rank3Winners == 0) { rank3divide = 1; } else { rank3divide = rank3Winners; }
-                //Calculate general gains
-                int rank0Gain = 0;
-                double? rank1Gain = (relatedDrawData.Jackpot) * 0.6 / rank1divide;
-                double? rank2Gain = (relatedDrawData.Jackpot) * 0.2 / rank2divide;
-                double? rank3Gain = (relatedDrawData.Jackpot) * 0.2 / rank3divide;
-
-                //Display amount of good numbers
-                int? numberOfGoodNumbers;
-                if (sessionData.Rank == 0)
-                    numberOfGoodNumbers = 0;
-                else
-                    numberOfGoodNumbers = 7-sessionData.Rank;
-
-                //Display personnal gain by checking the rank:
-                double? gain = 0;
-                switch (sessionData.Rank)
+                var lastDraw = dbContext.GameDraws.OrderBy(x => x.Id).LastOrDefault();
+                var drawCompleted = dbContext.GameDraws.Where(d => d.Id.Equals(lastDraw.Id))
+                                             .Select(d => d.DrawnNumbers)
+                                             .FirstOrDefault();
+                if (drawCompleted == null)
                 {
-                    case 0:
-                        gain = rank0Gain;
-                        break;
-                    case 1:
-                        gain = rank1Gain;
-                        break;
-                    case 2:
-                        gain = rank2Gain;
-                        break;
-                    case 3:
-                        gain = rank3Gain;
-                        break;
+                    throw new Exception(message: "Le tirage n'a pas encore eu lieu, il faudra consulter les résultats plus tard");
                 }
-                // Filling ViewModel
-                var result = new GetResultsWithCodeViewModel()
+                else
                 {
-                    Rank1Winners = rank1Winners,
-                    Rank2Winners = rank2Winners,
-                    Rank3Winners = rank3Winners,
-                    Rank1Gain = rank1Gain,
-                    Rank2Gain = rank2Gain,
-                    Rank3Gain = rank3Gain,
-                    NumberOfGoodNumbers = numberOfGoodNumbers,
-                    Gain = gain,
-                    DateTime = relatedDrawData.DateTime,
-                    DrawNumbers = relatedDrawData.DrawnNumbers.Split(' '),
-                    PlayedNumbers = sessionData.PlayedNumbers.Split(' ')
+                    ResultsRequests(shortGUID, out sessionData, out relatedDrawData, out rank1Winners, out rank2Winners, out rank3Winners);
 
-                };
-                return result;
+                    double? rank1Gain, rank2Gain, rank3Gain, gain;
+                    int? numberOfGoodNumbers;
+
+                    CalculateResults(sessionData, relatedDrawData, rank1Winners, rank2Winners, rank3Winners, out rank1Gain, out rank2Gain, out rank3Gain, out numberOfGoodNumbers, out gain);
+
+                    var result = new GetResultsWithCodeViewModel()
+                    {
+                        Rank1Winners = rank1Winners,
+                        Rank2Winners = rank2Winners,
+                        Rank3Winners = rank3Winners,
+                        Rank1Gain = rank1Gain,
+                        Rank2Gain = rank2Gain,
+                        Rank3Gain = rank3Gain,
+                        NumberOfGoodNumbers = numberOfGoodNumbers,
+                        Gain = gain,
+                        DateTime = relatedDrawData.DateTime,
+                        DrawNumbers = relatedDrawData.DrawnNumbers.Split(' '),
+                        PlayedNumbers = sessionData.PlayedNumbers.Split(' ')
+                    };
+                    return result;
+                }
             }
             else
             {
                 throw new Exception(message: "Le code entré ne correspond pas à une session de jeu, veuillez vérifier votre saisie");
-            }
-            
+            }   
         }
-        public SessionValidationViewModel ValidateGameSession(int[] numbers)
+        /// <summary>
+        /// Retrieve data from both session and related draw, with code, and find number of winners for each rank thanks to GameDrawId
+        /// </summary>
+        private void ResultsRequests(string shortGUID, out GameSession? sessionData, out GameDraw? relatedDrawData, out int rank1Winners, out int rank2Winners, out int rank3Winners)
         {
-            
-            var playedNumbersFromParameters = numbers.ToString();
+            sessionData = dbContext.GameSessions.Where(s => s.ShortGuid.Equals(shortGUID))
+                                                .FirstOrDefault();
+            var sessionFound = sessionData;
+            relatedDrawData = dbContext.GameDraws.Where(s => s.Id.Equals(sessionFound.GameDrawId))
+                                                .FirstOrDefault();
 
-            //record into database
-            var session = new DataLayer.Model.GameSession
+            var gameDrawID = relatedDrawData?.Id;
+
+            rank1Winners = dbContext.GameSessions.Where(s => s.Rank.Equals(1))
+                                                    .Where(i => i.GameDrawId.Equals(gameDrawID))
+                                                    .Count();
+            rank2Winners = dbContext.GameSessions.Where(s => s.Rank.Equals(2))
+                                                    .Where(i => i.GameDrawId.Equals(gameDrawID))
+                                                    .Count();
+            rank3Winners = dbContext.GameSessions.Where(s => s.Rank.Equals(3))
+                                                    .Where(i => i.GameDrawId.Equals(gameDrawID))
+                                                    .Count();
+        }
+        /// <summary>
+        /// Calculates general gains, and user results
+        /// </summary>
+        private static void CalculateResults(GameSession? sessionData, GameDraw? relatedDrawData, int rank1Winners, int rank2Winners, int rank3Winners, out double? rank1Gain, out double? rank2Gain, out double? rank3Gain, out int? numberOfGoodNumbers, out double? gain)
+        {
+            // Manage the cases with 0 winners
+            int rank1divide;
+            int rank2divide;
+            int rank3divide;
+
+            if (rank1Winners == 0) { rank1divide = 1; } else { rank1divide = rank1Winners; }
+            if (rank2Winners == 0) { rank2divide = 1; } else { rank2divide = rank2Winners; }
+            if (rank3Winners == 0) { rank3divide = 1; } else { rank3divide = rank3Winners; }
+
+            //General gains
+            int rank0Gain = 0;
+
+            rank1Gain = (relatedDrawData.Jackpot) * 0.6 / rank1divide;
+            rank2Gain = (relatedDrawData.Jackpot) * 0.2 / rank2divide;
+            rank3Gain = (relatedDrawData.Jackpot) * 0.2 / rank3divide;
+
+            //Number of good numbers
+            if (sessionData.Rank == 0)
+                numberOfGoodNumbers = 0;
+            else
+                numberOfGoodNumbers = 7 - sessionData.Rank;
+
+            //Personal gain:
+            gain = 0;
+            switch (sessionData.Rank)
             {
-                PlayedNumbers = playedNumbersFromParameters
-            };
-            dbContext.GameSessions.Add(session);
-            // dbContext.SaveChanges();
+                case 0:
+                    gain = rank0Gain;
+                    break;
+                case 1:
+                    gain = rank1Gain;
+                    break;
+                case 2:
+                    gain = rank2Gain;
+                    break;
+                case 3:
+                    gain = rank3Gain;
+                    break;
+            }
+        }
 
+        
+        public SessionValidationViewModel ValidateGameSession(List<int> numbers)
+        {
+            string playedNumbers = FormatNumbers(numbers);
 
-            //display confirmation page
-            var playedNumbers = "01 02 03 04 05 06";
-            var shortGuid = "1234567890123456789012";
+            string shortGuid = GenerateShortGuid();
+
+            RecordSessionData(playedNumbers, shortGuid);
 
             var result = new SessionValidationViewModel()
             {
@@ -164,6 +191,77 @@ namespace Lottery_2022.Services
             };
             return result;
         }
+        /// <summary>
+        /// Put the 6 numbers into a string of 17 caracters
+        /// </summary>
+        private static string FormatNumbers(List<int> numbers)
+        {
+            string[] numericString = new string[6];
+
+            for (int i = 0; i < 6; i++)
+            {
+                if (numbers[i] < 10)
+                {
+                    numericString[i] = "0" + numbers[i].ToString();
+                }
+                else
+                {
+                    numericString[i] = numbers[i].ToString();
+                }
+            }
+            string playedNumbers = String.Join(" ", numericString);
+            return playedNumbers;
+        }
+        /// <summary>
+        /// Generate Short Guid that doesn't already exist in database, thanks to CSharpVitamin package
+        /// </summary>
+        private string GenerateShortGuid()
+        {
+            int codeVerification;
+            string shortGuid;
+
+            do
+            {
+                Guid? guid = Guid.NewGuid();
+                ShortGuid? sGuid = guid;
+                shortGuid = sGuid;
+                codeVerification = dbContext.GameSessions.Where(s => s.ShortGuid.Equals(shortGuid)).Count();
+            }
+            while (codeVerification != 0);
+            return shortGuid;
+        }
+        /// <summary>
+        /// Retrieve Id of the current GameDraw and record session into database
+        /// </summary>
+        private void RecordSessionData(string playedNumbers, string shortGuid)
+        {
+            int currentGameDrawId = dbContext.GameDraws.OrderBy(x => x.Id).Select(i => i.Id).LastOrDefault();
+
+            var session = new DataLayer.Model.GameSession
+            {
+                PlayedNumbers = playedNumbers,
+                ShortGuid = shortGuid,
+                GameDrawId = currentGameDrawId
+            };
+            dbContext.GameSessions.Add(session);
+            dbContext.SaveChanges();
+
+            // add 5€ to the jackpot
+            var lastDraw = dbContext.GameDraws.OrderBy(x => x.Id).LastOrDefault();
+            lastDraw.Jackpot = (lastDraw.Jackpot)+5;
+            dbContext.SaveChanges();
+        }
+
+
+
+
+
+
+
+
+        /// <summary>
+        /// Tool used to add test data to DB (like seed method)
+        /// </summary>
         public void AddGenericData()
         {     
             var data1 = new GameDraw()
@@ -206,8 +304,10 @@ namespace Lottery_2022.Services
             dbContext.GameSessions.Add(data3);
             dbContext.GameSessions.Add(data4);
             dbContext.GameSessions.Add(data5);
-            dbContext.SaveChanges();
+            //dbContext.SaveChanges();
         }
-        #endregion
+
+
+
     }
 }

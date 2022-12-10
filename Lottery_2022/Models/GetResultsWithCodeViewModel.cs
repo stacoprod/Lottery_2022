@@ -15,5 +15,15 @@ namespace Lottery_2022.Models
         public double? Gain { get; set; }
         public string[]? DrawNumbers { get; set; }
         public string[]? PlayedNumbers { get; set; }
+
+        public bool playedNumberIsGood (string number)
+        {
+            bool isGoodNumber = false;
+
+            if (this.DrawNumbers.Contains(number))
+                isGoodNumber = true;
+
+            return isGoodNumber;
+        }
     }
 }
