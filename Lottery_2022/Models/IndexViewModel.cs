@@ -7,5 +7,7 @@ namespace Lottery_2022.Models
     {
         public string? Jackpot { get; set; }
         public string? NumberOfPlayers { get; set; }
+
     }
+    
 }

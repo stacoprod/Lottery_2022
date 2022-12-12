@@ -2,11 +2,11 @@ html {
   font-size: 14px;
 }
 
-@media (min-width: 768px) {
+/*@media (min-width: 768px) {
   html {
     font-size: 16px;
   }
-}
+}*/
 
 html {
   position: relative;
@@ -17,22 +17,21 @@ body {
     margin-bottom: 60px;
     background-color: #474747;
 }
-
+.container, footer{
+    width: 500px;
+    color: white;
+    margin: auto;
+}
 .logo {
-    width = 90%;
+    width: 90%;
     display: flex;
     justify-content: center;
 }
-.banner{
-    display:flex;
-    align-items: center;
-    margin: auto;
-    font-size: 30px;
-    color: white;
-    width: 600px;
-    height: 90px;
-}
+
 .homeButton {
+    position: relative;
+    left: -10px;
+    top: -5px;
     font-size: 70px;
     transform: scale(0.90);
     transition: all 200ms ease-in-out;
@@ -45,7 +44,19 @@ body {
     padding-left: 50px;
     margin: auto;
 }
-
+.refresh {
+    font-size: 40px;
+    position: absolute;
+    /*top: -30px;
+    left: 2px;*/
+    top: 375px;
+    transform: scale(0.90);
+    transition: all 200ms ease-in-out;
+}
+.refresh:hover {
+    transform: scale(1.150);
+    transition: all 200ms ease-in-out;
+}
 .content {
     margin: auto;
     width = 90%;
@@ -54,48 +65,46 @@ body {
     justify-content: center;
 }
 
-.textMessage {
-    font-size: 25px;
-    color: white;
-    padding-right: 150px;
-    margin: auto;
-}
-
 .separation {
-    width: 650px;
+    width: 100%;
     margin-bottom: 50px;
     color: white;
     margin: auto;
 }
-h4 {
-    color: #FFAD33;
-    font-size: 19px;
-    margin: auto;
+h1, h2, h4 {
+    text-align: center;
+}
+h1 {
+    color: white;
+    font-size: 60px;
 }
 h2 {
     color: #FFAD33;
     font-size: 27px;
-    margin: auto;
 }
-
-h1 {
+h3 {
     color: white;
-    font-size: 60px;
-    margin: auto;
+    font-size: 22px;
 }
-
+h4 {
+    color: #FFAD33;
+    font-size: 19px;
+}
 .changeColor {
     color: white;
+}
+.changeGuidCss {
+    color: #33ff31;
+    font-size: 30px;
 }
 .buttonBox {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin: auto;
-    width: 460px;
+    padding-top: 20px;
 }
 
-.disabledButton {
+.disabledButton{
     width: 50%;
     font-size: 22px;
     text-align: center;
@@ -106,7 +115,7 @@ h1 {
     background-color: #969696;
     transform: scale(0.90);
 }
-.button {
+.button, .activeButton{
     width: 50%;
     font-size: 22px;
     text-align: center;
@@ -118,8 +127,11 @@ h1 {
     transform: scale(0.90);
     transition: all 200ms ease-in-out;
 }
+.activeButton, .disabledButton {
+    transition: background-color none;
+}
 
-.button:hover {
+.button:hover, .activeButton:hover {
     background-color: #4fd100;
     transform: scale(1);
     transition: all 200ms ease-in-out;
@@ -128,29 +140,19 @@ h1 {
     background-color: #ffa849;
 }
 
-    .button2:hover {
-        background-color: #ffa849;
-    }
+.button2:hover {
+    background-color: #ffa849;
+}
 .shortGUID {
-    margin: auto;
-    width: 500px;
     height: 40px;
     font-size: 20px;
 }
 .guidText {
-    width: 83%;
-}
-
-h3 {
-    margin: auto;
-    color: white;
-    font-size: 22px;
- 
+    width: 82%;
 }
 
 p {
     color: white;
-    margin: auto;
 }
 
 .infoItem {
@@ -175,7 +177,12 @@ h3:hover {
 .participate {
     margin: auto;
 }
+.importantCode {
+    padding: 30px;
+    border: 1px solid white;
+    border-radius: 15px;
+}
 .warnings {
     text-align:justify;
-    width: 600px;
+    width: 480px;
 }

@@ -1,17 +1,14 @@
 ﻿.gameGrid {
-    margin: auto;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: space-between;
-    width: 500px;
 }
 .form-check {
     position: relative;
     width: 56px;
     height: 56px;
-    padding: 12px;
-    margin: 7px;
+    margin: 6px;
     box-sizing: border-box;
 }
 .form-check input {  
@@ -24,6 +21,7 @@
     z-index: 2;
 }
 .ball, .ballColoured, .form-check label{
+    color: black;
     font-size: 19px;
     width: 56px;
     height: 56px;
@@ -33,6 +31,7 @@
     text-align: center;
     transform: scale(0.90);
     transition: all 200ms ease-in-out;
+    margin: 8px;
 }
 .ballColoured {
     background: linear-gradient(45deg, #009f18, #11ff34);

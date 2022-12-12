@@ -64,19 +64,20 @@ namespace Lottery_2022.Services
             {
                 GameSession? sessionData;
                 GameDraw? relatedDrawData;
-                int rank1Winners, rank2Winners, rank3Winners;
+                int? gameDrawID;
+                string? drawCompleted;
 
-                var lastDraw = dbContext.GameDraws.OrderBy(x => x.Id).LastOrDefault();
-                var drawCompleted = dbContext.GameDraws.Where(d => d.Id.Equals(lastDraw.Id))
-                                             .Select(d => d.DrawnNumbers)
-                                             .FirstOrDefault();
+                SessionDrawRequest(shortGUID, out sessionData, out relatedDrawData, out gameDrawID, out drawCompleted);
+                
                 if (drawCompleted == null)
                 {
                     throw new Exception(message: "Le tirage n'a pas encore eu lieu, il faudra consulter les résultats plus tard");
                 }
                 else
                 {
-                    ResultsRequests(shortGUID, out sessionData, out relatedDrawData, out rank1Winners, out rank2Winners, out rank3Winners);
+                    int rank1Winners, rank2Winners, rank3Winners;
+  
+                    GlobalWinnersRequest(gameDrawID, out rank1Winners, out rank2Winners, out rank3Winners);
 
                     double? rank1Gain, rank2Gain, rank3Gain, gain;
                     int? numberOfGoodNumbers;
@@ -106,27 +107,36 @@ namespace Lottery_2022.Services
             }   
         }
         /// <summary>
-        /// Retrieve data from both session and related draw, with code, and find number of winners for each rank thanks to GameDrawId
+        /// Retrieve data from both session and related draw, with code
         /// </summary>
-        private void ResultsRequests(string shortGUID, out GameSession? sessionData, out GameDraw? relatedDrawData, out int rank1Winners, out int rank2Winners, out int rank3Winners)
+        private void SessionDrawRequest(string shortGUID, out GameSession? sessionData, out GameDraw? relatedDrawData, out int? gameDrawID, out string? drawCompleted)
         {
             sessionData = dbContext.GameSessions.Where(s => s.ShortGuid.Equals(shortGUID))
-                                                .FirstOrDefault();
-            var sessionFound = sessionData;
-            relatedDrawData = dbContext.GameDraws.Where(s => s.Id.Equals(sessionFound.GameDrawId))
-                                                .FirstOrDefault();
-
-            var gameDrawID = relatedDrawData?.Id;
-
+                                                                        .FirstOrDefault();
+            var session = sessionData;
+            relatedDrawData = dbContext.GameDraws.Where(s => s.Id.Equals(session.GameDrawId))
+                                                                        .FirstOrDefault();
+            gameDrawID = relatedDrawData?.Id;
+            
+            int? drawId = gameDrawID;
+            drawCompleted = dbContext.GameDraws.Where(d => d.Id.Equals(drawId))
+                                         .Select(d => d.DrawnNumbers)
+                                         .FirstOrDefault();
+        }
+        /// <summary>
+        /// Find number of winners for each rank
+        /// </summary>
+        private void GlobalWinnersRequest(int? gameDrawID, out int rank1Winners, out int rank2Winners, out int rank3Winners)
+        {
             rank1Winners = dbContext.GameSessions.Where(s => s.Rank.Equals(1))
-                                                    .Where(i => i.GameDrawId.Equals(gameDrawID))
-                                                    .Count();
+                                                                        .Where(i => i.GameDrawId.Equals(gameDrawID))
+                                                                        .Count();
             rank2Winners = dbContext.GameSessions.Where(s => s.Rank.Equals(2))
-                                                    .Where(i => i.GameDrawId.Equals(gameDrawID))
-                                                    .Count();
+                                                                        .Where(i => i.GameDrawId.Equals(gameDrawID))
+                                                                        .Count();
             rank3Winners = dbContext.GameSessions.Where(s => s.Rank.Equals(3))
-                                                    .Where(i => i.GameDrawId.Equals(gameDrawID))
-                                                    .Count();
+                                                                        .Where(i => i.GameDrawId.Equals(gameDrawID))
+                                                                        .Count();
         }
         /// <summary>
         /// Calculates general gains, and user results
@@ -177,19 +187,38 @@ namespace Lottery_2022.Services
         
         public SessionValidationViewModel ValidateGameSession(List<int> numbers)
         {
-            string playedNumbers = FormatNumbers(numbers);
-
-            string shortGuid = GenerateShortGuid();
-
-            RecordSessionData(playedNumbers, shortGuid);
-
-            var result = new SessionValidationViewModel()
+            bool timesUp = CheckTime();
+            if (!timesUp)
             {
-                PlayedNumbers = playedNumbers.Split(" "),
-                Code = shortGuid,
-                DrawDateTime = DateTime.Today
-            };
-            return result;
+                string playedNumbers = FormatNumbers(numbers);
+
+                string shortGuid = GenerateShortGuid();
+
+                RecordSessionData(playedNumbers, shortGuid);
+
+                var result = new SessionValidationViewModel()
+                {
+                    PlayedNumbers = playedNumbers.Split(" "),
+                    Code = shortGuid,
+                    DrawDateTime = DateTime.Now
+                };
+                return result;
+            }
+            else
+            {
+                throw new Exception(message: "Les jeux sont faits, veuillez attendre le prochain jeu pour valider vos numéros");
+            }
+        }
+        /// <summary>
+        /// Block session validation if it remains less than 1 minute before next game
+        /// </summary>
+        private static bool CheckTime()
+        {
+            int time = DateTime.UtcNow.Minute;
+            if (time % 5 < 4)
+                return false;
+            else
+                return true;
         }
         /// <summary>
         /// Put the 6 numbers into a string of 17 caracters
@@ -306,8 +335,5 @@ namespace Lottery_2022.Services
             dbContext.GameSessions.Add(data5);
             //dbContext.SaveChanges();
         }
-
-
-
     }
 }

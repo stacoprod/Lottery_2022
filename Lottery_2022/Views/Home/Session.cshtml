@@ -1,34 +1,27 @@
 ﻿@{
     ViewData["Title"] = "Game Session";
 }
+@section Scripts{
+    <script type="text/javascript" src="/js/session.js"></script>
+}
 <header>
 </header>
 <div class="content">
-    <div class="banner">
-        <a class="homeButton" asp-controller="Home" asp-action="Index"><iconify-icon inline icon="ic:outline-home"></iconify-icon></a>
-        <span class="textMessage"><iconify-icon inline icon="ic:baseline-access-time"></iconify-icon>   PROCHAINE LOTERIE DANS:</span>
-    </div>
-    <script>
-        window.startRedirection = 5;
-        test = function () {
-
-            setInterval(function () {
-
-                document.getElementById("compteur").innerHTML = window.startRedirection;
-
-                if (!window.startRedirection) { window.location = "https://www.google.fr" }
-
-                window.startRedirection = window.startRedirection - 1;
-
-            }, 1000);
-        }
-        var elmt = document.getElementById("compteur");
-        elmt.onload = test();
-    </script>
+        
+        <div class="timerContainer">
+            <a class="homeButton" asp-controller="Home" asp-action="Index">
+                <iconify-icon inline icon="dashicons:admin-home"></iconify-icon>   
+            </a>
+            <div class="textMessage"><iconify-icon inline icon="ic:baseline-access-time"></iconify-icon>   PROCHAINE LOTERIE:</div>
+            <div class="timeBox">
+                <span id="timer" class="timerTimeRemains"></span>
+            </div>
+        </div>
+    
     <br>
     <hr class="separation">
     <br>
-    <h2>Veuillez choisir 6 numéros dans la liste:</h2>
+    <h2>Veuillez choisir 6 numéros:</h2>
     <br>
     <form asp-action="SessionValidation" method="get">
         
@@ -44,11 +37,9 @@
                 }
             </div>
             <div class="buttonBox">
-                <input class="button button2" type="reset" value="REINITIALISER
-LA SELECTION">
+                <input class="button button2" type="reset" value="REINITIALISER">
 
-            <input class="disabledButton" id="gameSubmit" type="submit" value=" VALIDER CES
-NUMEROS" disabled="disabled" OnClick="submitVerification()";">
+            <input class="disabledButton" id="gameSubmit" type="submit" value=" VALIDER" disabled="disabled";">
             </div>
         
     </form>

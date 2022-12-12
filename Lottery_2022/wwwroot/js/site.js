@@ -1,21 +1,43 @@
 ﻿// Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
 // for details on configuring this project to bundle and minify static web assets.
 
-// Write your JavaScript code.
+// Script for timer
+var nowT = new Date()
+var realMinute = 4 - (nowT.getMinutes() % 5)
+var realSecond = 60 - nowT.getSeconds()
 
-$('input[type=checkbox').on('change', function (e) {
-    if ($('input[type=checkbox]:checked').length > 6) {
-        $(this).prop('checked', false);
-        alert("Vous ne pouvez pas choisir plus de 6 numéros ! Veuillez désélectionner des numéros pour en choisir d'autres.");
-    }
-    else if ($('input[type=checkbox]:checked').length < 6) {
-        document.getElementById('gameSubmit').disabled = 'disabled';
-        document.getElementById('gameSubmit').classList.remove('button');
-        document.getElementById('gameSubmit').classList.add('disabledButton');
+const departMinutes = realMinute
+let timeSpan = realSecond + realMinute * 60
+const timerElement = document.getElementById("timer")
+//loop for timer itself
+setInterval(() => {
+    let minutes = parseInt(timeSpan / 60, 10)
+    let seconds = parseInt(timeSpan % 60, 10)
+
+    minutes = minutes < 10 ? "0" + minutes : minutes
+    seconds = seconds < 10 ? "0" + seconds : seconds
+
+    if (timeSpan < 60) {
+        redColouring()
     }
     else {
-        document.getElementById('gameSubmit').disabled = '';
-        document.getElementById('gameSubmit').classList.remove('disabledButton');
-        document.getElementById('gameSubmit').classList.add('button');
+        whiteColouring()
     }
-})
+    timerElement.innerText = `${minutes}:${seconds}`
+    timeSpan = timeSpan <= 0 ? 300 : timeSpan = timeSpan - 1   
+}, 1000)
+
+// script when site put at background
+var blurred = false;
+window.onblur = function () { blurred = true; };
+window.onfocus = function () { blurred && (location.reload()); };
+
+//functions for color of timer
+function redColouring() {
+    document.getElementById('timer').classList.remove('timerTimeRemains');
+    document.getElementById('timer').classList.add('timerTimesUp');
+}
+function whiteColouring() {
+    document.getElementById('timer').classList.remove('timerTimesUp');
+    document.getElementById('timer').classList.add('timerTimeRemains');
+}

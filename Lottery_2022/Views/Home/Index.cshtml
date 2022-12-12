@@ -7,16 +7,20 @@
     <div class="logo"><a href="#"><img class=" logoItem" src="/images/logo.png" /></a></div>
 </header>
 <div class="content">
-    <span class="textMessage"><iconify-icon inline icon="ic:baseline-access-time"></iconify-icon>   PROCHAINE LOTERIE DANS:</span>
+    <div class="timerContainer">
+        <div class="textMessage"><iconify-icon inline icon="ic:baseline-access-time"></iconify-icon>   PROCHAINE LOTERIE DANS: </div>
+        <div class="timeBox">
+            <span id="timer" class="timerTimeRemains"></span>
+        </div>
+    </div>
+
     <br />
     <hr class="separation">
     <br />
     <h2>Montant de la cagnotte en cours:</h2>
     <br />
-    <h1>@Model.Jackpot €</h1>
+    <h1>@Model.Jackpot € <a class="refresh" asp-controller="Home" asp-action="Index"><iconify-icon inline icon="simple-line-icons:reload"></iconify-icon></a></h1>
     <h2>Pour <span class="changeColor">@Model.NumberOfPlayers</span> parties jouées</h2>
-    <br />
-    <br />
     <div class="buttonBox">
         <a class="button" asp-controller="Home" asp-action="Session">JE PARTICIPE</a>
     </div>
@@ -31,7 +35,5 @@
     </form>
     <br />
     <h3><a asp-controller="Home" asp-action="GuidInformations"><iconify-icon inline icon="ic:outline-info"></iconify-icon> En savoir plus</a></h3>
-
-
 </div>
 

@@ -1,0 +1,40 @@
+﻿.timerContainer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 0px 3px;
+}
+.textMessage {
+    font-size: 22px;
+    color: white;
+    width: 340px;
+    position: relative;
+        left: 10px;
+}
+.timeBox {
+    text-align: center;
+    background-color: #373737;
+    border: solid 1px white;
+    border-radius: 19px;
+    height: 50px;
+    width: 160px;
+}
+#timer {
+    font-family: 'VT323';
+    font-size: 50px;
+    position: relative;
+    top: -15px;
+}
+
+#timer {
+    font-family: 'VT323';
+    font-size: 50px;
+    position: relative;
+    top: -15px;
+}
+.timerTimeRemains {
+    color: white;
+}
+.timerTimesUp{
+    color: red;
+}

@@ -3,19 +3,22 @@
 }
 
 <div class="content">
-    <div class="banner">
-        <a class="homeButton" asp-controller="Home" asp-action="Index"><iconify-icon inline icon="ic:outline-home"></iconify-icon></a>
-    </div>
+    <div class="timerContainer">
+            <a class="homeButton" asp-controller="Home" asp-action="Index">
+                <iconify-icon inline icon="dashicons:admin-home"></iconify-icon>   
+            </a>
+            <div class="textMessage"><iconify-icon inline icon="ic:baseline-access-time"></iconify-icon>   PROCHAINE LOTERIE:</div>
+            <div class="timeBox">
+                <span id="timer" class="timerTimeRemains"></span>
+            </div>
+        </div>
     <br />
     <hr class="separation">
-    <h2>Résultats du tirage:</h2>
     <br />
-    <h4>Rang 1 (6 bons n°): <span class="changeColor">@Model.Rank1Winners</span> personne(s) remporte(nt) <span class="changeColor">@Model.Rank1Gain €</span> </h4>
-    <h4>Rang 2 (5 bons n°): <span class="changeColor">@Model.Rank2Winners</span> personne(s) remporte(nt) <span class="changeColor">@Model.Rank2Gain €</span> </h4>
-    <h4>Rang 3 (4 bons n°): <span class="changeColor">@Model.Rank3Winners</span> personne(s) remporte(nt) <span class="changeColor">@Model.Rank3Gain €</span> </h4>
+    <h2 class="changeColor">Résultats du tirage:</h2>
+    <h2>(@Model.DateTime)</h2>
     <br />
-    <h2>Combinaison sortante du <span class="changeColor">@Model.DateTime</span>:</h2>
-    <br />
+    <h2 class="changeColor">Numéros gagnants:</h2>
     <br />
     <div class="gameGrid">
         @{
@@ -26,7 +29,7 @@
         }
     </div>
     <br />
-    <h2>Votre combinaison:</h2>
+    <h2 class="changeColor">Vos numéros:</h2>
     <br />
     <div class="gameGrid">
         @{
@@ -46,11 +49,14 @@
     </div>
     <br />
     <h2>Vous avez trouvé <span class="changeColor">@Model.NumberOfGoodNumbers</span> bon(s) numéro(s).</h2> 
-    <h2>Vous avez gagné <span class="changeColor">@Model.Gain</span> €</h2>
+    <h2>Vous avez gagné <span class="changeColor">@Model.Gain €</span></h2>
     <br />
-    <h3><a asp-controller="Home" asp-action="GameInformations"><iconify-icon inline icon="ic:outline-info"></iconify-icon> A propos du calcul des gains / règlement du jeu</a></h3>
+    <h2 class="changeColor">Gagnants:</h2>
+    <h4>Rang 1 (6 bons n°): <span class="changeColor">@Model.Rank1Winners</span> personne(s) remporte(nt) <span class="changeColor">@Model.Rank1Gain €</span> </h4>
+    <h4>Rang 2 (5 bons n°): <span class="changeColor">@Model.Rank2Winners</span> personne(s) remporte(nt) <span class="changeColor">@Model.Rank2Gain €</span> </h4>
+    <h4>Rang 3 (4 bons n°): <span class="changeColor">@Model.Rank3Winners</span> personne(s) remporte(nt) <span class="changeColor">@Model.Rank3Gain €</span> </h4>
     <br />
-    <span class="textMessage"><iconify-icon inline icon="ic:baseline-access-time"></iconify-icon>   PROCHAINE LOTERIE DANS:</span>
+    <h3><a asp-controller="Home" asp-action="GameInformations"><iconify-icon inline icon="ic:outline-info"></iconify-icon> Comment les gains sont-ils calculés?</a></h3>
     <br />
     <div class="buttonBox">
         <a class="button" asp-controller="Home" asp-action="Session">REJOUER</a>
