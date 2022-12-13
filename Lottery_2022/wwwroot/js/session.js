@@ -1,7 +1,10 @@
 ﻿// Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
 // for details on configuring this project to bundle and minify static web assets.
 
-// loop for numbers selection and validation button
+// Summary
+// Loop that blocks validation button (or unlock it) depending on remaining time and count of numbers checked
+// (Could be refactored, as consume ressources)
+// Summary
 setInterval(() => {
     var now = new Date()
     var realtime = now.getMinutes() % 5
@@ -21,11 +24,10 @@ setInterval(() => {
     }
     else {
         blockHtml();
-    }
-    
-}, 150)
+    }    
+}, 200)
 
-//Changes if we 1 minute before next game:
+//Functions that change CSS depending on conditions of the loop above:
 function blockHtml() {
     document.getElementById('gameSubmit').disabled = 'disabled';
     document.getElementById('gameSubmit').classList.remove('activeButton');

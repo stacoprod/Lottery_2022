@@ -53,7 +53,7 @@ namespace DataLayer.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int>("GameDrawId")
+                    b.Property<int?>("GameDrawId")
                         .HasColumnType("int");
 
                     b.Property<string>("PlayedNumbers")
@@ -79,9 +79,7 @@ namespace DataLayer.Migrations
                 {
                     b.HasOne("DataLayer.Model.GameDraw", "GameDraw")
                         .WithMany("GameSessions")
-                        .HasForeignKey("GameDrawId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("GameDrawId");
 
                     b.Navigation("GameDraw");
                 });

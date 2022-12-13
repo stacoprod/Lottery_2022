@@ -1,7 +1,6 @@
 ﻿@{
     ViewData["Title"] = "Results Page";
 }
-
 <div class="content">
     <div class="timerContainer">
             <a class="homeButton" asp-controller="Home" asp-action="Index">
@@ -42,8 +41,7 @@
                 else
                 {
                     <span class='ball'> @Model.PlayedNumbers[@i]</span>
-                }
-                
+                }    
             }
         }
     </div>

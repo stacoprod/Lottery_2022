@@ -1,7 +1,8 @@
-﻿@{
+﻿@*@model SessionValidationViewModel*@
+@{
     ViewData["Title"] = "Session Confirmation Page";
+    //var model = TempData["datacontainer"] as SessionValidationViewModel; //ajouté pour régler problème URL
 }
-
 <div class="content">
     <div class="timerContainer">
             <a class="homeButton" asp-controller="Home" asp-action="Index">
@@ -42,8 +43,8 @@
     </div>
     <br />
     <div class="buttonBox">
-        <a class="button" asp-controller="Home" asp-action="Session">REJOUER</a>
-        <a class="button" asp-controller="Home" asp-action="Index">ACCUEIL</a>
+        <a class="button" href="~/Home">REJOUER</a>
+        <a class="button" href="~/Home">ACCUEIL</a>
     </div>
 </div>
 

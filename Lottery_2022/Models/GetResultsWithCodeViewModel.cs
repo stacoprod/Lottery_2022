@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace Lottery_2022.Models
+﻿namespace Lottery_2022.Models
 {
     public class GetResultsWithCodeViewModel
     {

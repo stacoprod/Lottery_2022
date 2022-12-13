@@ -13,7 +13,6 @@
             <span id="timer" class="timerTimeRemains"></span>
         </div>
     </div>
-
     <br />
     <hr class="separation">
     <br />
@@ -28,7 +27,7 @@
     <br />
     <h2>Accéder aux résultats:</h2>
     <br />
-    <form asp-action="GetResultsWithCode" method="get" class="shortGUID">
+    <form asp-action="GetResultsWithCode" method="post" class="shortGUID">
         <input  type="text" name="code" class="guidText" required placeholder="Entrez ici votre code..."
             minlength="22" maxlength="22" size="22">
         <input type="submit" value="Valider">

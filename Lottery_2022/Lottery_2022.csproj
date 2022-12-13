@@ -16,8 +16,6 @@
   <ItemGroup>
     <Compile Remove="Services\AutomaticLaunchService.cs" />
     <Compile Remove="Services\IAutomaticLaunchService.cs" />
-    <Compile Remove="Services\IIndexService.cs" />
-    <Compile Remove="Services\IndexService.cs" />
     <Compile Remove="Services\IResultsService.cs" />
     <Compile Remove="Services\ResultsService.cs" />
   </ItemGroup>

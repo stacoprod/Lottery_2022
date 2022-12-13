@@ -1,4 +1,3 @@
-
 namespace Lottery_2022.Models
 {
     public class ErrorViewModel

@@ -1,7 +1,17 @@
 ﻿// Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
 // for details on configuring this project to bundle and minify static web assets.
 
-// Script for timer
+// Summary
+// Script that refresh location page, if page has been put to background
+// Allow to update the timer and solve some delay problems
+// Sumarry
+var blurred = false;
+window.onblur = function () { blurred = true; };
+window.onfocus = function () { blurred && (location.reload()); };
+
+// Summary
+// Script for timer, based on realtime (starts at 12:05, 12:10, 12:15, etc)
+// Summary
 var nowT = new Date()
 var realMinute = 4 - (nowT.getMinutes() % 5)
 var realSecond = 60 - nowT.getSeconds()
@@ -9,7 +19,7 @@ var realSecond = 60 - nowT.getSeconds()
 const departMinutes = realMinute
 let timeSpan = realSecond + realMinute * 60
 const timerElement = document.getElementById("timer")
-//loop for timer itself
+
 setInterval(() => {
     let minutes = parseInt(timeSpan / 60, 10)
     let seconds = parseInt(timeSpan % 60, 10)
@@ -17,7 +27,7 @@ setInterval(() => {
     minutes = minutes < 10 ? "0" + minutes : minutes
     seconds = seconds < 10 ? "0" + seconds : seconds
 
-    if (timeSpan < 60) {
+    if (timeSpan <= 60) {
         redColouring()
     }
     else {
@@ -27,12 +37,7 @@ setInterval(() => {
     timeSpan = timeSpan <= 0 ? 300 : timeSpan = timeSpan - 1   
 }, 1000)
 
-// script when site put at background
-var blurred = false;
-window.onblur = function () { blurred = true; };
-window.onfocus = function () { blurred && (location.reload()); };
-
-//functions for color of timer
+// Functions that define CSS of timer:
 function redColouring() {
     document.getElementById('timer').classList.remove('timerTimeRemains');
     document.getElementById('timer').classList.add('timerTimesUp');
