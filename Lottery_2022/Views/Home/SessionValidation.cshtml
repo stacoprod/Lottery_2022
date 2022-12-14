@@ -1,50 +1,65 @@
 ﻿@*@model SessionValidationViewModel*@
 @{
     ViewData["Title"] = "Session Confirmation Page";
-    //var model = TempData["datacontainer"] as SessionValidationViewModel; //ajouté pour régler problème URL
 }
-<div class="content">
-    <div class="timerContainer">
+<div class="timerContainerLogo">
+            <br />
             <a class="homeButton" asp-controller="Home" asp-action="Index">
-                <iconify-icon inline icon="dashicons:admin-home"></iconify-icon>   
+                <iconify-icon inline icon="dashicons:admin-home"></iconify-icon>
             </a>
-            <div class="textMessage"><iconify-icon inline icon="ic:baseline-access-time"></iconify-icon>   PROCHAINE LOTERIE:</div>
-            <div class="timeBox">
-                <span id="timer"></span>
+            <div class="logo"><a asp-controller="Home" asp-action="Index"><img class=" logoItem" src="/images/logo.png" /></a></div>
+            <div class="timerContainer">
+                <div class="textMessage"><iconify-icon inline icon="ic:baseline-access-time"></iconify-icon>   PROCHAINE LOTERIE DANS: </div>
+                <div class="timeBox">
+                    <span id="timer" class="timerTimeRemains"></span>
+                </div>
             </div>
         </div>
-    <br />
-    <hr class="separation">
-    <br />
-    <h2 class="changeColor">Merci d'avoir participé!</h2>
-    <h4>La cagnotte vient d'augmenter de 5€ grâce à vous</h4>
-    <br />
-    <div class="importantCode">
-        <h2 class="changeColor">Voici votre code:</h2>
         <br />
-        <h2 class="changeGuidCss">@Model.Code</h2>
+        <hr class="separation">
         <br />
-        <h4 class="changeColor">Copiez collez ce code, et gardez en lieu sûr.</h4>
-        <h4 class="changeColor">Il vous sera nécessaire afin de consulter les résultats du tirage et voir vos gains.</h4>
-    </div>
-    <br />
-    <br />
-    <h2>Tirage du: <span class="changeColor">@Model.DrawDateTime</span></h2>
-    <br />
-    <h2>Vos numéros:</h2>
-    <br />
-    <div class="gameGrid">
-        @{
-            for (int i = 0; i < 6; i++)
-            {
-                <span class='ball'> @Model.PlayedNumbers[@i]</span>
+<div class="GameArea">
+    <div class="mainBlock">
+        <h2 class="changeColor">Merci d'avoir participé!</h2>
+        <h4>La cagnotte vient d'augmenter de 5€ grâce à vous</h4>
+        <br />
+        <div class="importantCode">
+            <h2 class="changeColor">Voici votre code:</h2>
+            <br />
+            <h2 class="changeGuidCss">@Model.Code</h2>
+            <br />
+            <h4 class="changeColor">Copiez collez ce code, et gardez en lieu sûr.</h4>
+            <h4 class="changeColor">Il vous sera nécessaire afin de consulter les résultats du tirage et voir vos gains.</h4>
+        </div>
+        <br />
+        <br />
+        <h2>Tirage du: <span class="changeColor">@Model.DrawDateTime</span></h2>
+        <br />
+        <h2>Vos numéros:</h2>
+        <br />
+        <div class="gameGrid">
+            @{
+                for (int i = 0; i < 6; i++)
+                {
+                    <span class='ball'> @Model.PlayedNumbers[@i]</span>
+                }
             }
-        }
-    </div>
-    <br />
-    <div class="buttonBox">
-        <a class="button" href="~/Home">REJOUER</a>
-        <a class="button" href="~/Home">ACCUEIL</a>
+        </div>
+        <br />
+        <div class="buttonBox">
+            <a class="button" href="~/Home/Session">REJOUER</a>
+            <a class="button" href="~/Home">ACCUEIL</a>
+        </div>
     </div>
 </div>
+<div class="block3">
+    <br>
+    <br>
+    <div class="infoLink"><a href="https://www.joueurs-info-service.fr/Joueurs/etre-rappele-par-un-conseiller?xtor=SEC-1-GOO&gclid=EAIaIQobChMI_evikvfV-wIV6_93Ch2EuQAVEAAYASABEgJrxPD_BwE&gclsrc=aw.ds" target="_blank"><img class=" infoItem" src="/images/info-service.png"></a></div>
+    <br>
+    <p class="warnings">Les jeux de hasard comportent un risque, et peuvent entraîner dépendance, isolement social et dépression. Si vous pensez être un sujet à risque, ne jouez pas ou appeler le 09 74 75 13 13 (7j/7, appel anonyme et non surtaxé)</p>
+    <br>
+</div>
+
+
 

@@ -7,7 +7,7 @@ namespace Lottery_2022.Services
         /// <summary>
         /// If code ok, displasy the results of both related session and draw
         /// </summary>
-        /// <returns>SessionValidationViewModel</returns>
+        /// <returns>GetResultsWithCodeViewModel</returns>
         GetResultsWithCodeViewModel GetResultsWithCode(string shortGUID);
     }
 }

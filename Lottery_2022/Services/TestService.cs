@@ -5,6 +5,7 @@ namespace Lottery_2022.Services
 {
     public class TestService : ITestService
     {
+        #region constructor / properties
         private readonly LotteryDbContext dbContext;
 
         public TestService(LotteryDbContext dbContext)
@@ -13,7 +14,9 @@ namespace Lottery_2022.Services
         }
 
         public LotteryDbContext DbContext { get; set; }
+        #endregion
 
+        #region public method
         /// <summary>
         /// Tool used to add test data to DB (like seed method)
         /// </summary>
@@ -61,5 +64,6 @@ namespace Lottery_2022.Services
             dbContext.GameSessions?.Add(data5);
             //dbContext.SaveChanges();
         }
+        #endregion
     }
 }

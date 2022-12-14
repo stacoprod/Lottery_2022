@@ -1,0 +1,20 @@
+﻿@{
+    ViewData["Title"] = "Error Page";
+}
+@model ErrorsViewModel
+<div class="infoTexts">
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <div class="logoWithoutText"><a asp-controller="Home" asp-action="Index"><img class="item404" src="/images/404balls.png" /></a></div>
+    <h2>@Model.ErrorMessage</h2>
+    <br />
+    <br />
+    <div class="buttonBox">
+        <a class="button" href="~/Home">ACCUEIL</a>
+        <a class="button" href="~/Home/Session">JOUER</a>
+    </div>
+ </div>

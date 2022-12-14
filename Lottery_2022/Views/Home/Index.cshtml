@@ -2,37 +2,51 @@
 @{
     ViewData["Title"] = "Home Page";
 }
-<header>
-    <br />
-    <div class="logo"><a href="#"><img class=" logoItem" src="/images/logo.png" /></a></div>
-</header>
-<div class="content">
-    <div class="timerContainer">
-        <div class="textMessage"><iconify-icon inline icon="ic:baseline-access-time"></iconify-icon>   PROCHAINE LOTERIE DANS: </div>
-        <div class="timeBox">
-            <span id="timer" class="timerTimeRemains"></span>
+<div class="timerContainerLogo">
+            <br />
+            <a class="homeButton" asp-controller="Home" asp-action="Index">
+                <iconify-icon inline icon="dashicons:admin-home"></iconify-icon>
+            </a>
+            <div class="logo"><a asp-controller="Home" asp-action="Index"><img class=" logoItem" src="/images/logo.png" /></a></div>
+            <div class="timerContainer">
+                <div class="textMessage"><iconify-icon inline icon="ic:baseline-access-time"></iconify-icon>   PROCHAINE LOTERIE DANS: </div>
+                <div class="timeBox">
+                    <span id="timer" class="timerTimeRemains"></span>
+                </div>
+            </div>
         </div>
+        <br />
+        <hr class="separation">
+        <br />
+<div class="GameArea">
+    <div class ="mainBlock2">
+        <h2>Montant de la cagnotte en cours:</h2>
+        <br />
+        <h1>@Model.Jackpot € <a class="refresh" asp-controller="Home" asp-action="Index"><iconify-icon inline icon="simple-line-icons:reload"></iconify-icon></a></h1>
+        <h2>Pour <span class="changeColor">@Model.NumberOfPlayers</span> parties jouées</h2>
+        <div class="buttonBox">
+            <a class="button" asp-controller="Home" asp-action="Session">JE PARTICIPE</a>
+        </div>
+        <br />
+        <br />
+        <h2>Accéder aux résultats:</h2>
+        <br />
+        <form asp-action="GetResultsWithCode" method="post" class="shortGUID">
+            <input  type="text" name="code" class="guidText" required placeholder="Entrez ici votre code..."
+                minlength="22" maxlength="22" size="22">
+            <input type="submit" value="Valider">
+        </form>
+        <br />
+        <h3><a asp-controller="Home" asp-action="Informations"><iconify-icon inline icon="ic:outline-info"></iconify-icon> En savoir plus</a></h3>
     </div>
-    <br />
-    <hr class="separation">
-    <br />
-    <h2>Montant de la cagnotte en cours:</h2>
-    <br />
-    <h1>@Model.Jackpot € <a class="refresh" asp-controller="Home" asp-action="Index"><iconify-icon inline icon="simple-line-icons:reload"></iconify-icon></a></h1>
-    <h2>Pour <span class="changeColor">@Model.NumberOfPlayers</span> parties jouées</h2>
-    <div class="buttonBox">
-        <a class="button" asp-controller="Home" asp-action="Session">JE PARTICIPE</a>
-    </div>
-    <br />
-    <br />
-    <h2>Accéder aux résultats:</h2>
-    <br />
-    <form asp-action="GetResultsWithCode" method="post" class="shortGUID">
-        <input  type="text" name="code" class="guidText" required placeholder="Entrez ici votre code..."
-            minlength="22" maxlength="22" size="22">
-        <input type="submit" value="Valider">
-    </form>
-    <br />
-    <h3><a asp-controller="Home" asp-action="GuidInformations"><iconify-icon inline icon="ic:outline-info"></iconify-icon> En savoir plus</a></h3>
 </div>
+<div class="block3">
+    <br>
+    <br>
+    <div class="infoLink"><a href="https://www.joueurs-info-service.fr/Joueurs/etre-rappele-par-un-conseiller?xtor=SEC-1-GOO&gclid=EAIaIQobChMI_evikvfV-wIV6_93Ch2EuQAVEAAYASABEgJrxPD_BwE&gclsrc=aw.ds" target="_blank"><img class=" infoItem" src="/images/info-service.png"></a></div>
+    <br>
+    <p class="warnings">Les jeux de hasard comportent un risque, et peuvent entraîner dépendance, isolement social et dépression. Si vous pensez être un sujet à risque, ne jouez pas ou appeler le 09 74 75 13 13 (7j/7, appel anonyme et non surtaxé)</p>
+    <br>
+</div>
+<br />
 

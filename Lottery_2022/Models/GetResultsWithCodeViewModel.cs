@@ -13,8 +13,11 @@
         public double? Gain { get; set; }
         public string[]? DrawNumbers { get; set; }
         public string[]? PlayedNumbers { get; set; }
+        public string? ErrorMessage { get; set; }
 
-        public bool playedNumberIsGood (string number)
+        #region method
+        // Allows to color the good numbers in green:
+        public bool playedNumberIsGood(string number)
         {
             bool isGoodNumber = false;
 
@@ -23,5 +26,6 @@
 
             return isGoodNumber;
         }
+        #endregion
     }
 }

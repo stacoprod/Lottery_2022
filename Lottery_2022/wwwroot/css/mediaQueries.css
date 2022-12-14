@@ -1,0 +1,305 @@
+﻿@media (min-width: 1700px) {
+    html {
+        font-size: 14px;
+        position: relative;
+        min-height: 100%;
+    }
+
+    body {
+        margin-bottom: 60px;
+        background-color: #474747;
+    }
+
+    .container, footer {
+        color: white;
+        background-color: aquamarine;
+    }
+
+
+    .mainBlock, .mainBlock2{
+        top: 60px;
+        margin-left: 50px;
+        transform: scale(1);
+        transition: all 250ms ease-in-out;
+    }
+    .mainBlock2 {
+        position: relative;
+        top: 160px;
+    }
+    .mainBlock3 {
+        top: -20px;
+        transform: scale(0.90);
+        transition: all 250ms ease-in-out;
+    }
+    .timerContainerLogo {
+        margin-right: 50px;
+        top: 60px;
+        transform: scale(1);
+        transition: all 200ms ease-in-out;
+    }
+
+    .block3 {
+        margin-right: 50px;
+        top: 560px;
+        transform: scale(1);
+        transition: all 150ms ease-in-out;
+    }
+    .logo {
+        position: relative;
+                right: 70px;
+    }
+    .logo, .logoWithoutText, .infoLink {
+        display: flex;
+        background-color:;
+    }
+
+    .infoLink {
+        margin: auto auto;
+    }
+
+    .logoItem, .item404 {
+        padding-left: 50px;
+        margin: auto;
+    }
+
+    .logoWithoutText {
+        width: 280px;
+    }
+
+    .homeButton {
+        display: none;
+    }
+
+        .homeButton:hover {
+            transform: scale(1.1);
+            transition: all 200ms ease-in-out;
+        }
+
+    .refresh {
+        font-size: 60px;
+        position: absolute;
+        top: 30px;
+        transform: scale(0.90);
+        transition: all 200ms ease-in-out;
+    }
+
+        .refresh:hover {
+            transform: scale(1.150);
+            transition: all 200ms ease-in-out;
+        }
+
+    .content {
+        margin: auto;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        background-color: brown;
+    }
+
+    .separation {
+        width: 100%;
+        margin-bottom: 50px;
+        color: white;
+        margin: auto;
+        display: none;
+    }
+
+    h1, h2, h4 {
+        text-align: center;
+    }
+
+    h1 {
+        color: white;
+        font-size: 60px;
+    }
+
+    h2 {
+        color: #FFAD33;
+        font-size: 27px;
+    }
+
+    h3 {
+        color: white;
+        font-size: 22px;
+    }
+
+    h4 {
+        color: #FFAD33;
+        font-size: 19px;
+    }
+
+    .changeColor {
+        color: white;
+    }
+
+    .changeGuidCss {
+        color: #33ff31;
+        font-size: 30px;
+    }
+
+    .buttonBox {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding-top: 20px;
+        margin: auto;
+    }
+
+
+    .disabledButton {
+        margin: auto;
+        width: 50%;
+        font-size: 22px;
+        text-align: center;
+        color: white;
+        padding: 40px;
+        border: 1px;
+        border-radius: 45px;
+        background-color: #969696;
+        transform: scale(0.90);
+    }
+
+    .button, .activeButton {
+        margin: auto;
+        width: 50%;
+        font-size: 22px;
+        text-align: center;
+        background-color: #25B900;
+        color: white;
+        padding: 40px;
+        border: 1px;
+        border-radius: 45px;
+        transform: scale(0.90);
+        transition: all 200ms ease-in-out;
+    }
+
+    .activeButton, .disabledButton {
+        transition: background-color none;
+    }
+
+        .button:hover, .activeButton:hover {
+            background-color: #4fd100;
+            transform: scale(1);
+            transition: all 200ms ease-in-out;
+        }
+
+    .button2 {
+        background-color: #ffa849;
+    }
+
+        .button2:hover {
+            background-color: #ffa849;
+        }
+
+    .shortGUID {
+        height: 40px;
+        font-size: 20px;
+    }
+
+    .guidText {
+        width: 82%;
+    }
+
+    p {
+        color: white;
+    }
+
+    .infoItem {
+        width: 300px;
+    }
+
+    a {
+        text-decoration: none;
+        color: white;
+    }
+
+        a:hover {
+            text-decoration: none;
+            color: white;
+            transform: scale(1.1);
+            transition: all 200ms ease-in-out;
+        }
+
+    h3:hover {
+        transform: scale(1.1);
+        transition: all 200ms ease-in-out;
+    }
+
+    .participate {
+        margin: auto;
+    }
+
+    .importantCode {
+        padding: 30px;
+        border: 1px solid white;
+        border-radius: 15px;
+    }
+
+    p {
+        text-align: justify;
+        font-size: 17px;
+        width: 480px;
+    }
+
+    .infoZoom {
+        top: 180px;
+        transform: scale(1);
+        transition: all 200ms ease-in-out;
+    }
+
+    .infoZoom:hover {
+        transform: scale(1.2);
+        transition: all 200ms ease-in-out;
+    }
+    .infoTexts {
+        top: -120px;
+        transform: scale(1);
+        transition: all 200ms ease-in-out;
+    }
+
+}
+
+@media (max-width: 820px) {
+
+    .logoItem {
+        display: inline;
+    }
+
+    .mainBlock, .mainBlock2, .mainBlock3 {
+        position: absolute;
+        left: 10vw;
+        top: -10px;
+        transform: scale(0.5);
+        transition: all 250ms ease-in-out;
+    }
+
+    .mainBlock2 {
+        top: 60px;
+        left: 10vw;
+    }
+    .mainBlock3 {
+        top: -70px;
+        transform: scale(0.45);
+        transition: all 250ms ease-in-out;
+    }
+
+    .timerContainerLogo {
+        top: -70px;
+        left: 5vw;
+        transform: scale(0.5);
+        transition: all 200ms ease-in-out;
+    }
+
+    .block3 {
+        top: 500px;
+        left: 5vw;
+        transform: scale(0.5);
+        transition: all 150ms ease-in-out;
+    }
+    .infoTexts {
+        top: -190px;
+        transform: scale(0.5);
+        transition: all 200ms ease-in-out;
+    }
+
+}

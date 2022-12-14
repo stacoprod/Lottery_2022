@@ -4,39 +4,52 @@
 @section Scripts{
     <script type="text/javascript" src="/js/session.js"></script>
 }
-<header>
-</header>
-<div class="content">
-        <div class="timerContainer">
+<div class="timerContainerLogo">
+            <br />
             <a class="homeButton" asp-controller="Home" asp-action="Index">
-                <iconify-icon inline icon="dashicons:admin-home"></iconify-icon>   
+                <iconify-icon inline icon="dashicons:admin-home"></iconify-icon>
             </a>
-            <div class="textMessage"><iconify-icon inline icon="ic:baseline-access-time"></iconify-icon>   PROCHAINE LOTERIE:</div>
-            <div class="timeBox">
-                <span id="timer" class="timerTimeRemains"></span>
+            <div class="logo"><a asp-controller="Home" asp-action="Index"><img class=" logoItem" src="/images/logo.png" /></a></div>
+            <div class="timerContainer">
+                <div class="textMessage"><iconify-icon inline icon="ic:baseline-access-time"></iconify-icon>   PROCHAINE LOTERIE DANS: </div>
+                <div class="timeBox">
+                    <span id="timer" class="timerTimeRemains"></span>
+                </div>
             </div>
-        </div>   
-    <br>
-    <hr class="separation">
-    <br>
+        </div>
+        <br />
+        <hr class="separation">
+        <br />
+<div class="gameArea">
+    <div class="mainBlock">
     <h2>Veuillez choisir 6 numéros:</h2>
-    <br>
-    <form asp-controller="Home" asp-action="RecordSession" method="post">
-            <div class="gameGrid">
-                @{
-                    for (int i = 1; i < 50; i++)
-                    {
-                        <div class="form-check">
-                            <input type="checkbox" class="ball"  id="@i" name="numbers" value="@i">
-                            <label for="ball">@i</label>
-                        </div>
+        <br>
+        <form asp-controller="Home" asp-action="RecordSession" method="post">
+                <div class="gameGrid">
+                    @{
+                        for (int i = 1; i < 50; i++)
+                        {
+                            <div class="form-check">
+                                <input type="checkbox" class="ball"  id="@i" name="numbers" value="@i">
+                                <label for="ball">@i</label>
+                            </div>
+                        }
                     }
-                }
-            </div>
-            <div class="buttonBox">
-                <input class="button button2" type="reset" value="REINITIALISER">
-            <input class="disabledButton" id="gameSubmit" type="submit" value=" VALIDER" disabled="disabled";">
-            </div>
-    </form>
-    <div class="alerts"></div>
+                </div>
+                <div class="buttonBox">
+                    <input class="button button2" type="reset" value="REINITIALISER">
+                <input class="disabledButton" id="gameSubmit" type="submit" value=" VALIDER" disabled="disabled";">
+                </div>
+        </form>
+        <br />
+        <h3><a asp-controller="Home" asp-action="Informations"><iconify-icon inline icon="ic:outline-info"></iconify-icon> Règles du jeu</a></h3>
+    </div>
+</div>
+<div class="block3">
+    <br>
+    <br>
+    <div class="infoLink"><a href="https://www.joueurs-info-service.fr/Joueurs/etre-rappele-par-un-conseiller?xtor=SEC-1-GOO&gclid=EAIaIQobChMI_evikvfV-wIV6_93Ch2EuQAVEAAYASABEgJrxPD_BwE&gclsrc=aw.ds" target="_blank"><img class=" infoItem" src="/images/info-service.png"></a></div>
+    <br>
+    <p class="warnings">Les jeux de hasard comportent un risque, et peuvent entraîner dépendance, isolement social et dépression. Si vous pensez être un sujet à risque, ne jouez pas ou appeler le 09 74 75 13 13 (7j/7, appel anonyme et non surtaxé)</p>
+    <br>
 </div>

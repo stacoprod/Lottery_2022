@@ -1,33 +1,25 @@
 ﻿using System.Data.SqlClient;
-//using DataLayer;
-
 
 namespace DrawLaunch
 {
     internal class Program
     {
-        /*private readonly LotteryDbContext dbContext;
-
-        public Program (LotteryDbContext dbContext)
-        {
-            this.dbContext = dbContext;
-        }
-
-        public LotteryDbContext DbContext { get; set; }*/
-
         const string CHAINE_CONNEXION = @"Data Source=(localdb)\MSSqlLocalDB;Initial Catalog=LotteryDB;Integrated Security=True";
         static SqlConnection? connection = default;
         static void Main(string[] args)
         {
-            Console.WriteLine("Starting a new game");
-            Console.WriteLine("###################");
+
+            #region Launch of new game
+            Console.WriteLine("Nouveau jeu");
+            Console.WriteLine("###########");
             Thread.Sleep(200);
             Connect();
+            // At this point: delay of 800 ms because of "thread sleeps"
+            // Players should not be able to create session for the draw already finished !!
+            // That's why the planned task has to start few seconds before 12:05 or 12:10 ...
 
-            // at this point: delay of 800 ms because of "thread sleeps"
-            // players could create session for the draw already finished
-            // that's why the planned task has to start few seconds before 12:05 or 12:10 ...
-            Console.WriteLine("Creation of a new entry in database...");
+            // A new row is created in GameDraws table with initial jackpot value = 10:
+            Console.WriteLine("Ajout d'un nouvelle ligne en base de données...");
             var sql = ($"insert into GameDraws (Jackpot) values ({10})");
             SqlCommand cmd = new SqlCommand(sql);
             cmd.Connection = connection;
@@ -36,22 +28,25 @@ namespace DrawLaunch
             DoneMessage();
 
             Disconnect();
-            Console.WriteLine("Waiting of 4 minutes before the draw, take a coffee...");
-            //Thread.Sleep(238300);
-            Thread.Sleep(18300);
+            Console.WriteLine("Temps d'attente de 4 minutes avant le tirage, le temps d'un café...");
+            Thread.Sleep(243300);
+            #endregion
 
-            //The game has started 4 minutes ago, at this step, it should be impossible to create a session during 1 minutes.
-            //Draws are based on real time, every 5 minutes (see planned task).
-            //On MVC, game is blocked by puting a verification on Time, for special ranges like 12:04 to 12:05, 12:34 to 12:35...
-            //Minute % 5 = 0 to unlock and (minute+1) % 5 = 0 to lock.
+            // The game has started 4 minutes ago, at this step, it should be impossible to create a session during 1 minutes.
+            // Draws are based on real time, every 5 minutes (see planned task).
+            // On MVC, game is blocked by puting a verification on Time, for special ranges like 12:04 to 12:05, 12:34 to 12:35...
+            // Minute % 5 = 0 to unlock and (minute+1) % 5 = 0 to lock.
 
+            #region launch of final draw
+            // Launch of draw:
             Connect();
-
-            Console.WriteLine("Draw is starting ...");
+            Console.WriteLine("Le tirage commence ...");
             string drawnNumbers = "";
             drawnNumbers = LaunchGameDraw(drawnNumbers);
             Thread.Sleep(600);
-            Console.WriteLine("Recording of the draw...");
+
+            // Record drawn numbers into database
+            Console.WriteLine("Enregistrement des résultats...");
             string datetime = DateTime.Now.ToString("s");
             var sql2 = ($"UPDATE GameDraws SET DateTime = '{datetime}', DrawnNumbers = '{drawnNumbers}' where [Id] = (SELECT MAX([Id]) FROM GameDraws)");
             SqlCommand cmd2 = new SqlCommand(sql2);
@@ -60,43 +55,28 @@ namespace DrawLaunch
             Thread.Sleep(300);
             DoneMessage();
 
-            // calculate ranks, all in SQl, can be long. Time available on this thread = 58200ms
-            // Sufficient for a small amount of sessions (>1000) but can be exponentially long
-            Console.WriteLine("Calcul of the results...");
+            // Select all sessions related to this game:
+            Console.WriteLine("Calcul des résultats...");
+            List<int>? idSession = new List<int>();
+            List<int>? ranks = new List<int>();
             var sessions = @"select * FROM Gamesessions LEFT JOIN GameDraws ON GameSessions.GameDrawId = GameDraws.Id WHERE GameDrawId = (SELECT MAX([Id]) FROM GameDraws)";
             SqlCommand cmd3 = new SqlCommand(sessions);
             cmd3.Connection = connection;
             SqlDataReader reader = cmd3.ExecuteReader();
-            while (reader.Read())
-            {
-                int idSession = reader.GetInt32(0);
-                string[] playedNumbers = reader.GetString(2).Split(' ');
-                int matches = 0;
-                int rank;
 
-                foreach (string playedNumber in playedNumbers)
-                {
-                    if (drawnNumbers.Contains(playedNumber))
-                        matches++;
-                }
-                if (matches == 0)
-                    rank = 0;
-                else
-                    rank = 7 - matches;
+            // Update each session with calculated ranks
+            // Time available on this thread = 58200ms
+            // Sufficient for a small amount of sessions (>1000) but can be exponentially long
+            CalculateRanks(drawnNumbers, idSession, ranks, reader);
+            RecordRanks(idSession, ranks);
 
-                var sql4 = ($"UPDATE GameSessions SET Rank = '{rank}' where [Id] = {idSession}");
-                SqlCommand cmd4 = new SqlCommand(sql4);
-                cmd4.Connection = connection;
-                cmd4.ExecuteNonQuery();
-            }
-            reader.Close();
             Thread.Sleep(300);
             DoneMessage();
-
             Disconnect();
             Console.WriteLine("End of game");
             Console.WriteLine("###########");
-            Thread.Sleep(600);
+            Thread.Sleep(800);
+            #endregion
         }
         #region methods
         /// <summary>
@@ -106,7 +86,8 @@ namespace DrawLaunch
         {
             Random rnd = new Random();
             int[]? numbers = new int[6];
-            
+
+            // random select of 6 numbers
             for (int i = 0; i < 6; i++)
             {
                 int number;
@@ -118,7 +99,8 @@ namespace DrawLaunch
                 
                 numbers[i] = number;
              }
-            // reformat
+
+            // reformat numbers and return of a string
             string[]? numbersTab = new string[6];
             for (int i = 0; i < 6; i++)
             {
@@ -132,11 +114,46 @@ namespace DrawLaunch
             return drawnNumbers;
         }
         /// <summary>
-        /// Reads the current session line in database, compare numbers to draw-numbers, and gives a rank
+        /// Reads each row, compare numbers to draw-numbers, and calculate ranks
         /// </summary>
-        
+        private static void CalculateRanks(string drawnNumbers, List<int> idSession, List<int> ranks, SqlDataReader reader)
+        {
+            while (reader.Read())
+            {
+                idSession.Add(reader.GetInt32(0));
+                string[] playedNumbers = reader.GetString(2).Split(' ');
+                int matches = 0;
+                int rank;
 
+                // compare numbers to draw-numbers
+                foreach (string playedNumber in playedNumbers)
+                {
+                    if (drawnNumbers.Contains(playedNumber))
+                        matches++;
+                }
 
+                // calculate ranks
+                if (matches == 0)
+                    rank = 0;
+                else
+                    rank = 7 - matches;
+                ranks.Add(rank);
+            }
+            reader.Close();
+        }
+        /// <summary>
+        /// Record each rank into corresponding row
+        /// </summary>
+        private static void RecordRanks(List<int> idSession, List<int> ranks)
+        {
+            for (int i = 0; i < idSession.Count(); i++)
+            {
+                var sqli = ($"UPDATE GameSessions SET Rank = '{ranks[i]}' where [Id] = {idSession[i]}");
+                SqlCommand cmdi = new SqlCommand(sqli);
+                cmdi.Connection = connection;
+                cmdi.ExecuteNonQuery();
+            }
+        }
         /// <summary>
         /// Open/Close methods
         /// </summary>
@@ -161,6 +178,5 @@ namespace DrawLaunch
             Thread.Sleep(300);
         }
         #endregion methods
-
     }
 }

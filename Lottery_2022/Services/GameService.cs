@@ -1,11 +1,13 @@
 ﻿using CSharpVitamins;
 using DataLayer;
 using Lottery_2022.Models;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Lottery_2022.Services
 {
     public class GameService : IGameService
     {
+        #region constructor / properties
         private readonly LotteryDbContext dbContext;
 
         public GameService(LotteryDbContext dbContext)
@@ -14,21 +16,26 @@ namespace Lottery_2022.Services
         }
 
         public LotteryDbContext DbContext { get; set; }
+        #endregion
+
+        #region public method
         /// <summary>
-        /// Generates the code, records session and displays the summary of the session (date & time of draw, numbers played and code)
+        /// Generates the code, records session and displays a review for the user (date & time of draw, numbers played and code)
         /// </summary>
         /// <returns>SessionValidationViewModel</returns>
         public SessionValidationViewModel ValidateGameSession(List<int> numbers)
         {
+            // Verification of real time before operations:
             bool timesUp = CheckTime();
             if (!timesUp)
             {
                 string playedNumbers = FormatNumbers(numbers);
-
                 string shortGuid = GenerateShortGuid();
 
+                // Database record method:
                 RecordSessionData(playedNumbers, shortGuid);
 
+                //Instanciation of viewmodel with a review for user:
                 var result = new SessionValidationViewModel()
                 {
                     PlayedNumbers = playedNumbers.Split(" "),
@@ -39,10 +46,17 @@ namespace Lottery_2022.Services
             }
             else
             {
-                throw new Exception(message: "Les jeux sont faits, veuillez attendre le prochain jeu pour valider vos numéros");
+                // Exception:
+                var result = new SessionValidationViewModel()
+                {
+                    ErrorMessage = "Les jeux sont faits, veuillez attendre la prochaine partie pour jouer"
+                };
+                return result;
             }
         }
+        #endregion
 
+        #region private methods
         /// <summary>
         /// Block session validation if it remains less than 1 minute before next game
         /// </summary>
@@ -72,6 +86,7 @@ namespace Lottery_2022.Services
                     numericString[i] = numbers[i].ToString();
                 }
             }
+            // format is like: "XX XX XX XX XX XX";
             string playedNumbers = String.Join(" ", numericString);
             return playedNumbers;
         }
@@ -90,7 +105,9 @@ namespace Lottery_2022.Services
                 shortGuid = sGuid;
                 codeVerification = dbContext.GameSessions?.Where(s => s.ShortGuid.Equals(shortGuid)).Count();
             }
+            //while code already exists:
             while (codeVerification != 0);
+
             return shortGuid;
         }
         /// <summary>
@@ -100,6 +117,7 @@ namespace Lottery_2022.Services
         {
             int currentGameDrawId = dbContext.GameDraws.OrderBy(x => x.Id).Select(i => i.Id).LastOrDefault();
 
+            //Record:
             var session = new DataLayer.Model.GameSession
             {
                 PlayedNumbers = playedNumbers,
@@ -109,10 +127,11 @@ namespace Lottery_2022.Services
             dbContext.GameSessions?.Add(session);
             dbContext.SaveChanges();
 
-            // add 5€ to the jackpot
+            // add 5€ to the jackpot, per new session:
             var lastDraw = dbContext.GameDraws.OrderBy(x => x.Id).LastOrDefault();
             lastDraw.Jackpot = (lastDraw.Jackpot)+5;
             dbContext.SaveChanges();
-        }        
+        }
+        #endregion
     }
 }

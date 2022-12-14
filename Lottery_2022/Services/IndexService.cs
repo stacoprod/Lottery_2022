@@ -1,10 +1,12 @@
 ﻿using DataLayer;
 using Lottery_2022.Models;
+using System.Drawing;
 
 namespace Lottery_2022.Services
 {
     public class IndexService : IIndexService
     {
+        #region constructor / properties
         private readonly LotteryDbContext dbContext;
 
         public IndexService(LotteryDbContext dbContext)
@@ -13,7 +15,9 @@ namespace Lottery_2022.Services
         }
 
         public LotteryDbContext DbContext { get; set; }
+        #endregion
 
+        #region public method
         /// <summary>
         /// Displays current draw's Jackpot and number of players, on index page
         /// </summary>
@@ -30,6 +34,9 @@ namespace Lottery_2022.Services
             };
             return result;
         }
+        #endregion
+
+        #region private method
         /// <summary>
         /// Retrieves jackpot and number of players for the current draw
         /// </summary>
@@ -49,5 +56,6 @@ namespace Lottery_2022.Services
                                              .Count()
                                              .ToString();
         }
+        #endregion
     }
 }
