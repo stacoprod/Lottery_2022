@@ -12,6 +12,7 @@ builder.Services.AddScoped<IIndexService, IndexService>();
 builder.Services.AddScoped<IGameService, GameService>();
 builder.Services.AddScoped<IResultService, ResultService>();
 builder.Services.AddScoped<ITestService, TestService>();
+builder.Services.AddSingleton<DrawService>();
 
 var app = builder.Build();
 
